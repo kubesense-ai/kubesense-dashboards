@@ -3,8 +3,10 @@ name: Validate dashboards
 on:
   pull_request:
     branches: [dev, test, main]
+  # Every branch, not only dev/test/main: a feature branch is checked by the
+  # kubeapi branch of the same name, so a dashboard and the kubeapi change it
+  # needs can be tested together before either merges.
   push:
-    branches: [dev, test, main]
   schedule:
     - cron: "0 3 * * *"
   workflow_dispatch:
@@ -36,11 +38,29 @@ jobs:
           ref: ${{ github.base_ref }}
           path: base
 
+      # A feature branch with no kubeapi branch of the same name falls back to
+      # kubeapi dev. dev, test and main always exist there.
+      - name: Pick the kubeapi branch
+        id: kubeapi
+        env:
+          BRANCH: ${{ matrix.branch }}
+          TOKEN: ${{ secrets.KUBEAPI_READ_TOKEN }}
+        run: |
+          if git ls-remote --exit-code --heads \
+              "https://x-access-token:${TOKEN}@github.com/kubesense-ai/kubeapi.git" \
+              "refs/heads/${BRANCH}" >/dev/null; then
+            ref="$BRANCH"
+          else
+            ref=dev
+          fi
+          echo "Validating with kubeapi ${ref}"
+          echo "ref=${ref}" >> "$GITHUB_OUTPUT"
+
       - name: Check out kubeapi
         uses: actions/checkout@v4
         with:
           repository: kubesense-ai/kubeapi
-          ref: ${{ matrix.branch }}
+          ref: ${{ steps.kubeapi.outputs.ref }}
           path: kubeapi
           token: ${{ secrets.KUBEAPI_READ_TOKEN }}
 
