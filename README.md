@@ -10,7 +10,8 @@ The `dev` API reads `dev`, the `test` API reads `test`, and production reads `ma
 
 1. Build the dashboard in KubeSense and use **Export**.
 2. Save the exported file anywhere in this repo as a `.json` file. Folder names are up to you.
-3. Add a `meta` block to the file:
+3. Export writes `preset` as a JSON string. Replace it with the object itself so pull requests show readable diffs. Both forms load the same.
+4. Add a `meta` block to the file:
 
 ```json
 {
@@ -22,12 +23,16 @@ The `dev` API reads `dev`, the `test` API reads `test`, and production reads `ma
   },
   "name": "AWS EC2 Overview",
   "description": "...",
-  "preset": "..."
+  "preset": {
+    "panels": [...],
+    "gridLayout": [...],
+    "variables": [...]
+  }
 }
 ```
 
 - `key` is the dashboard's permanent identity. Never change it. Renaming the dashboard or moving the file is fine.
-- `version` starts at 1. Raise it whenever you change the file, otherwise the API keeps the old copy.
+- `version` starts at 1. Raise it whenever you change the dashboard, otherwise the API keeps the old copy. Reformatting the file, or turning a string `preset` into an object, is not a change and needs no bump.
 - `integration_id` is optional: `aws`, `gcp`, `azure`, `confluent` or `github`. The dashboard is shown only while the customer has at least one account of that integration connected. Leave it out to show the dashboard to everyone.
 - To remove a dashboard, set `"retired": true` and raise `version`. Deleting the file does nothing.
 
