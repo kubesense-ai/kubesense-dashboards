@@ -1,0 +1,85 @@
+name: Validate dashboards
+
+on:
+  pull_request:
+    branches: [dev, test, main]
+  # Every branch, not only dev/test/main: a feature branch is checked by the
+  # kubeapi branch of the same name, so a dashboard and the kubeapi change it
+  # needs can be tested together before either merges. See "Pick the kubeapi
+  # branch".
+  push:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Each dashboards branch is checked by the kubeapi branch of the same
+        # name. The nightly run covers all three, because a kubeapi schema change
+        # can break a dashboard that nobody touched.
+        branch: ${{ fromJSON(github.event_name == 'schedule' && '["dev","test","main"]' || format('["{0}"]', github.base_ref || github.ref_name)) }}
+    steps:
+      - name: Check out dashboards
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'schedule' && matrix.branch || '' }}
+          path: dashboards
+
+      - name: Check out the base branch for version checks
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
+
+      # The kubeapi branch named after the dashboards branch being changed (a
+      # pull request's head, or the pushed branch) when it exists, so a
+      # dashboard is checked against the kubeapi change it was written for.
+      # Otherwise the branch it merges into (the PR's target, or dev for a
+      # push). dev, test and main always exist in kubeapi.
+      - name: Pick the kubeapi branch
+        id: kubeapi
+        env:
+          TWIN: ${{ github.event_name == 'schedule' && matrix.branch || github.head_ref || github.ref_name }}
+          FALLBACK: ${{ github.event_name == 'schedule' && matrix.branch || github.base_ref || 'dev' }}
+          TOKEN: ${{ secrets.KUBEAPI_READ_TOKEN }}
+        run: |
+          if git ls-remote --exit-code --heads \
+              "https://x-access-token:${TOKEN}@github.com/kubesense-ai/kubeapi.git" \
+              "refs/heads/${TWIN}" >/dev/null; then
+            ref="$TWIN"
+          else
+            ref="$FALLBACK"
+          fi
+          echo "Validating with kubeapi ${ref}"
+          echo "ref=${ref}" >> "$GITHUB_OUTPUT"
+
+      - name: Check out kubeapi
+        uses: actions/checkout@v4
+        with:
+          repository: kubesense-ai/kubeapi
+          ref: ${{ steps.kubeapi.outputs.ref }}
+          path: kubeapi
+          token: ${{ secrets.KUBEAPI_READ_TOKEN }}
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: kubeapi/go.mod
+          cache-dependency-path: kubeapi/go.sum
+
+      - name: Build the checker
+        working-directory: kubeapi
+        run: go build -o "$RUNNER_TEMP/dashboard-validate" ./cmd/dashboard-validate
+
+      - name: Validate
+        run: |
+          args=(-dir dashboards)
+          if [ -d base ]; then args+=(-base base); fi
+          "$RUNNER_TEMP/dashboard-validate" "${args[@]}"
