@@ -5,7 +5,8 @@ on:
     branches: [dev, test, main]
   # Every branch, not only dev/test/main: a feature branch is checked by the
   # kubeapi branch of the same name, so a dashboard and the kubeapi change it
-  # needs can be tested together before either merges.
+  # needs can be tested together before either merges. See "Pick the kubeapi
+  # branch".
   push:
   schedule:
     - cron: "0 3 * * *"
@@ -38,20 +39,24 @@ jobs:
           ref: ${{ github.base_ref }}
           path: base
 
-      # A feature branch with no kubeapi branch of the same name falls back to
-      # kubeapi dev. dev, test and main always exist there.
+      # The kubeapi branch named after the dashboards branch being changed (a
+      # pull request's head, or the pushed branch) when it exists, so a
+      # dashboard is checked against the kubeapi change it was written for.
+      # Otherwise the branch it merges into (the PR's target, or dev for a
+      # push). dev, test and main always exist in kubeapi.
       - name: Pick the kubeapi branch
         id: kubeapi
         env:
-          BRANCH: ${{ matrix.branch }}
+          TWIN: ${{ github.event_name == 'schedule' && matrix.branch || github.head_ref || github.ref_name }}
+          FALLBACK: ${{ github.event_name == 'schedule' && matrix.branch || github.base_ref || 'dev' }}
           TOKEN: ${{ secrets.KUBEAPI_READ_TOKEN }}
         run: |
           if git ls-remote --exit-code --heads \
               "https://x-access-token:${TOKEN}@github.com/kubesense-ai/kubeapi.git" \
-              "refs/heads/${BRANCH}" >/dev/null; then
-            ref="$BRANCH"
+              "refs/heads/${TWIN}" >/dev/null; then
+            ref="$TWIN"
           else
-            ref=dev
+            ref="$FALLBACK"
           fi
           echo "Validating with kubeapi ${ref}"
           echo "ref=${ref}" >> "$GITHUB_OUTPUT"

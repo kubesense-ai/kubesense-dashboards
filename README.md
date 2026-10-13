@@ -33,4 +33,4 @@ The `dev` API reads `dev`, the `test` API reads `test`, and production reads `ma
 
 ## Checks
 
-Every pull request is checked by kubeapi's own validator, built from the kubeapi branch with the same name as the target branch. Every push is checked too, using the kubeapi branch with the same name as the pushed branch, or kubeapi `dev` when there is none, so a dashboard can be tested against an unmerged kubeapi change. It refuses invalid dashboards, duplicate keys, unknown integrations, changes without a version bump and deleted keys.
+Every pull request and every push is checked by kubeapi's own validator. It is built from the kubeapi branch with the same name as the dashboards branch being changed, so a dashboard can be tested against an unmerged kubeapi change. When kubeapi has no such branch, it uses the branch being merged into (`dev` for a plain push). It refuses invalid dashboards, duplicate keys, unknown integrations, changes without a version bump and deleted keys.
