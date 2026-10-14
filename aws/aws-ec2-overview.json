@@ -1,7 +1,7 @@
 {
   "meta": {
     "key": "aws-ec2-overview",
-    "version": 1,
+    "version": 2,
     "integration_id": "aws",
     "tags": [
       "aws",
@@ -9,7 +9,7 @@
     ]
   },
   "name": "AWS EC2 Overview",
-  "description": "CPU, network and disk for EC2 instances, from the CloudWatch metrics the AWS integration collects.",
+  "description": "CPU, network, disk and status checks for EC2 instances.",
   "preset": {
     "gridLayout": [
       {
@@ -53,40 +53,12 @@
         "y": 2,
         "w": 6,
         "h": 4
-      },
-      {
-        "i": "6",
-        "x": 0,
-        "y": 6,
-        "w": 6,
-        "h": 4
-      },
-      {
-        "i": "7",
-        "x": 6,
-        "y": 6,
-        "w": 6,
-        "h": 4
-      },
-      {
-        "i": "8",
-        "x": 0,
-        "y": 10,
-        "w": 6,
-        "h": 4
-      },
-      {
-        "i": "9",
-        "x": 6,
-        "y": 10,
-        "w": 6,
-        "h": 4
       }
     ],
     "panels": [
       {
         "name": "Instances reporting",
-        "description": "EC2 instances with a CPUUtilization datapoint in the selected range.",
+        "description": "Resources with a CPUUtilization datapoint in the selected range.",
         "panelType": "stat",
         "queries": [
           {
@@ -110,13 +82,25 @@
                 "$region"
               ],
               "resource_id": [
-                "$instance"
+                "$resource"
               ],
               "metric_name": [
                 "CPUUtilization"
               ]
             },
             "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
               {
                 "type": "aggregations",
                 "name": "count",
@@ -172,7 +156,7 @@
                 "$region"
               ],
               "resource_id": [
-                "$instance"
+                "$resource"
               ],
               "metric_name": [
                 "CPUUtilization"
@@ -234,7 +218,7 @@
                 "$region"
               ],
               "resource_id": [
-                "$instance"
+                "$resource"
               ],
               "metric_name": [
                 "CPUUtilization"
@@ -271,8 +255,8 @@
         }
       },
       {
-        "name": "Network in",
-        "description": "Bytes received by all selected instances over the selected range.",
+        "name": "Network in (last 5 min)",
+        "description": "Sum over each 5-minute CloudWatch period.",
         "panelType": "stat",
         "queries": [
           {
@@ -296,7 +280,7 @@
                 "$region"
               ],
               "resource_id": [
-                "$instance"
+                "$resource"
               ],
               "metric_name": [
                 "NetworkIn"
@@ -328,7 +312,7 @@
           "yAxisLabelFormatter": "bytes",
           "valueOptions": {
             "show": "calculate",
-            "calculation": "sum"
+            "calculation": "last"
           }
         }
       },
@@ -358,7 +342,7 @@
                 "$region"
               ],
               "resource_id": [
-                "$instance"
+                "$resource"
               ],
               "metric_name": [
                 "CPUUtilization"
@@ -380,8 +364,7 @@
               }
             ],
             "labelOptions": {
-              "type": "custom",
-              "format": "{{resource_name}} {{resource_id}}"
+              "type": "auto"
             },
             "pagination": {
               "page": 1,
@@ -395,7 +378,7 @@
         }
       },
       {
-        "name": "Top instances by CPU",
+        "name": "Busiest instances by CPU",
         "description": "",
         "panelType": "topList",
         "queries": [
@@ -420,7 +403,7 @@
                 "$region"
               ],
               "resource_id": [
-                "$instance"
+                "$resource"
               ],
               "metric_name": [
                 "CPUUtilization"
@@ -429,7 +412,7 @@
             "functions": [
               {
                 "type": "aggregations",
-                "name": "avg",
+                "name": "max",
                 "arguments": [
                   {
                     "arg_name": "by",
@@ -442,8 +425,7 @@
               }
             ],
             "labelOptions": {
-              "type": "custom",
-              "format": "{{resource_name}} {{resource_id}}"
+              "type": "auto"
             },
             "pagination": {
               "page": 1,
@@ -453,449 +435,7 @@
           }
         ],
         "config": {
-          "yAxisLabelFormatter": "percentage",
-          "valueOptions": {
-            "show": "calculate",
-            "calculation": "mean"
-          }
-        }
-      },
-      {
-        "name": "Network traffic",
-        "description": "Bytes per CloudWatch period (5 minutes, or 1 minute with detailed monitoring).",
-        "panelType": "timeSeries",
-        "queries": [
-          {
-            "selectedMode": "metrics",
-            "label": "A",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "NetworkIn"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": []
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "In"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          },
-          {
-            "selectedMode": "metrics",
-            "label": "B",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "NetworkOut"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": []
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "Out"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          }
-        ],
-        "config": {
-          "yAxisLabelFormatter": "bytes"
-        }
-      },
-      {
-        "name": "Disk throughput",
-        "description": "EBS-backed instances report EBSReadBytes/EBSWriteBytes (Expanded tier); instance-store volumes report DiskReadBytes/DiskWriteBytes.",
-        "panelType": "timeSeries",
-        "queries": [
-          {
-            "selectedMode": "metrics",
-            "label": "A",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "EBSReadBytes"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": []
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "EBS read"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          },
-          {
-            "selectedMode": "metrics",
-            "label": "B",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "EBSWriteBytes"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": []
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "EBS write"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          },
-          {
-            "selectedMode": "metrics",
-            "label": "C",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "DiskReadBytes"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": []
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "Instance store read"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          },
-          {
-            "selectedMode": "metrics",
-            "label": "D",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "DiskWriteBytes"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": []
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "Instance store write"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          }
-        ],
-        "config": {
-          "yAxisLabelFormatter": "bytes"
-        }
-      },
-      {
-        "name": "Network in by instance",
-        "description": "",
-        "panelType": "timeSeries",
-        "queries": [
-          {
-            "selectedMode": "metrics",
-            "label": "A",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "NetworkIn"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": [
-                      "resource_id",
-                      "resource_name"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "{{resource_name}} {{resource_id}}"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          }
-        ],
-        "config": {
-          "yAxisLabelFormatter": "bytes"
-        }
-      },
-      {
-        "name": "Network out by instance",
-        "description": "",
-        "panelType": "timeSeries",
-        "queries": [
-          {
-            "selectedMode": "metrics",
-            "label": "A",
-            "selectedMetric": "kubesense_cloud_resource_metric",
-            "queryMode": "builder",
-            "promql": "",
-            "visible": true,
-            "filters": {
-              "provider": [
-                "aws"
-              ],
-              "resource_type": [
-                "Ec2Instance"
-              ],
-              "account_id": [
-                "$account"
-              ],
-              "region": [
-                "$region"
-              ],
-              "resource_id": [
-                "$instance"
-              ],
-              "metric_name": [
-                "NetworkOut"
-              ]
-            },
-            "functions": [
-              {
-                "type": "aggregations",
-                "name": "sum",
-                "arguments": [
-                  {
-                    "arg_name": "by",
-                    "arg_value": [
-                      "resource_id",
-                      "resource_name"
-                    ]
-                  }
-                ]
-              }
-            ],
-            "labelOptions": {
-              "type": "custom",
-              "format": "{{resource_name}} {{resource_id}}"
-            },
-            "pagination": {
-              "page": 1,
-              "page_size": 50
-            },
-            "fieldConfig": {}
-          }
-        ],
-        "config": {
-          "yAxisLabelFormatter": "bytes"
+          "yAxisLabelFormatter": "percentage"
         }
       }
     ],
@@ -911,6 +451,8 @@
             "type": "string",
             "is_attribute": false
           },
+          "selectType": "multiple",
+          "value": [],
           "filters": {
             "provider": [
               "aws"
@@ -918,9 +460,7 @@
             "resource_type": [
               "Ec2Instance"
             ]
-          },
-          "selectType": "multiple",
-          "value": []
+          }
         }
       },
       {
@@ -934,6 +474,8 @@
             "type": "string",
             "is_attribute": false
           },
+          "selectType": "multiple",
+          "value": [],
           "filters": {
             "provider": [
               "aws"
@@ -944,13 +486,11 @@
             "account_id": [
               "$account"
             ]
-          },
-          "selectType": "multiple",
-          "value": []
+          }
         }
       },
       {
-        "name": "instance",
+        "name": "resource",
         "description": "",
         "meta": {
           "variableType": "metrics",
@@ -960,6 +500,8 @@
             "type": "string",
             "is_attribute": false
           },
+          "selectType": "multiple",
+          "value": [],
           "filters": {
             "provider": [
               "aws"
@@ -973,13 +515,1142 @@
             "region": [
               "$region"
             ]
-          },
-          "selectType": "multiple",
-          "value": []
+          }
         }
       }
     ],
-    "subGrids": [],
-    "subGridLayout": []
+    "subGrids": [
+      {
+        "id": "network",
+        "title": "Network",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Network in",
+            "description": "Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "NetworkIn"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Network out",
+            "description": "Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "NetworkOut"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "disk",
+        "title": "Disk",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Disk read bytes",
+            "description": "Instance-store volumes only. Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "DiskReadBytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Disk write bytes",
+            "description": "Instance-store volumes only. Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "DiskWriteBytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Status check failures",
+            "description": "1 when a system or instance status check failed. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "StatusCheckFailed_System"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "StatusCheckFailed_Instance"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Network packets",
+            "description": "Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "NetworkPacketsIn"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "NetworkPacketsOut"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "EBS read / write bytes",
+            "description": "Nitro instances only. Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "EBSReadBytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "EBSWriteBytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "EBS read / write ops",
+            "description": "Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "EBSReadOps"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "EBSWriteOps"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "EBS IO balance",
+            "description": "Burst bucket remaining, lowest first. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "EBSIOBalance%"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "min",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "CPU credit balance",
+            "description": "Burstable (T-family) instances. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "CPUCreditBalance"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "CPU credit usage",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "CPUCreditUsage"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Disk ops",
+            "description": "Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "DiskReadOps"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "Ec2Instance"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_id": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "DiskWriteOps"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_id",
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "6",
+            "x": 0,
+            "y": 12,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "7",
+            "x": 6,
+            "y": 12,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-network",
+        "x": 0,
+        "y": 6,
+        "w": 12,
+        "h": 5
+      },
+      {
+        "i": "sg-disk",
+        "x": 0,
+        "y": 11,
+        "w": 12,
+        "h": 5
+      },
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 1
+      }
+    ]
   }
 }
