@@ -1,0 +1,2370 @@
+{
+  "meta": {
+    "key": "confluent-cloud-overview",
+    "version": 1,
+    "integration_id": "confluent",
+    "tags": [
+      "confluent",
+      "kafka",
+      "overview"
+    ]
+  },
+  "name": "Confluent Cloud Overview",
+  "description": "Throughput, load, topics and consumer lag for Confluent Cloud Kafka clusters.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "8",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "9",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "10",
+        "x": 0,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "11",
+        "x": 6,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Clusters reporting",
+        "description": "Resources reporting in the selected range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/received_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Bytes in",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/received_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Bytes out",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/sent_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Highest cluster load",
+        "description": "Dedicated and Enterprise clusters.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/cluster_load_percent"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Bytes in (produced)",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/received_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "Bytes out (consumed)",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/sent_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "Records in / out",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/received_records"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/sent_records"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Cluster load",
+        "description": "Dedicated and Enterprise clusters.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/cluster_load_percent"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage"
+        }
+      },
+      {
+        "name": "Requests",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/request_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Active connections",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/active_connection_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Retained bytes",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/retained_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "Partitions",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_id": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "io.confluent.kafka.server/partition_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "org",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "confluent"
+            ],
+            "resource_type": [
+              "ConfluentCluster"
+            ]
+          }
+        }
+      },
+      {
+        "name": "environment",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "environment",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "confluent"
+            ],
+            "resource_type": [
+              "ConfluentCluster"
+            ],
+            "account_id": [
+              "$org"
+            ]
+          }
+        }
+      },
+      {
+        "name": "cluster",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "resource_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "confluent"
+            ],
+            "resource_type": [
+              "ConfluentCluster"
+            ],
+            "account_id": [
+              "$org"
+            ],
+            "environment": [
+              "$environment"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "topics",
+        "title": "Topics",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Bytes in by topic",
+            "description": "Needs topic metrics on the integration. Per minute, from the Confluent Metrics API.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentTopic"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/received_bytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "topic"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Bytes out by topic",
+            "description": "Per minute, from the Confluent Metrics API.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentTopic"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/sent_bytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "topic"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Busiest topics (records in)",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentTopic"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/received_records"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "topic"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Largest topics (retained)",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentTopic"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/retained_bytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "topic"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "consumer-lag",
+        "title": "Consumer lag",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Total lag",
+            "description": "Needs consumer-group metrics on the integration.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentConsumerGroup"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/consumer_lag_offsets"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": []
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Lag by consumer group",
+            "description": "Offsets behind, summed over each group's topics.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentConsumerGroup"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/consumer_lag_offsets"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "consumer_group_id"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Most lagging groups",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentConsumerGroup"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/consumer_lag_offsets"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "consumer_group_id"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Most lagging topics",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentConsumerGroup"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "cluster_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/consumer_lag_offsets"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "topic"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 9,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Producer latency",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/producer_latency_avg_milliseconds"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "Cluster load avg / max",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/cluster_load_percent_avg"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/cluster_load_percent_max"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Client throttle time",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/client_limit_milliseconds"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "Hot partitions (ingress / egress)",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/hot_partition_ingress"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/hot_partition_egress"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "New connections / authentications",
+            "description": "Per minute, from the Confluent Metrics API. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/connection_accept_count"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/successful_authentication_count"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Request / response bytes",
+            "description": "Per minute, from the Confluent Metrics API. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/request_bytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/response_bytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "CKUs (dedicated / elastic)",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/dedicated_cku_count"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/elastic_cku_count"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Cluster link mirror lag",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_id": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "io.confluent.kafka.server/cluster_link_mirror_topic_offset_lag"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "6",
+            "x": 0,
+            "y": 12,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "7",
+            "x": 6,
+            "y": 12,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-topics",
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 9
+      },
+      {
+        "i": "sg-consumer-lag",
+        "x": 0,
+        "y": 27,
+        "w": 12,
+        "h": 9
+      },
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 36,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,3605 @@
+{
+  "meta": {
+    "key": "mongodb-atlas-overview",
+    "version": 1,
+    "integration_id": "mongodbatlas",
+    "tags": [
+      "mongodb",
+      "atlas",
+      "database",
+      "overview"
+    ]
+  },
+  "name": "MongoDB Atlas Overview",
+  "description": "Operations, latency, connections, replication, resources, disk and database size for Atlas clusters.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Clusters reporting",
+        "description": "Dedicated (M10+) clusters with cluster metrics turned on.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "CONNECTIONS"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "cluster"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Connections",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "CONNECTIONS"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Highest replication lag",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "OPLOG_REPLICATION_LAG_TIME"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "seconds",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Highest disk used",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "DISK_PARTITION_SPACE_PERCENT_USED"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Operations",
+        "description": "Query, insert, update and delete operations across the selected clusters.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "OPCOUNTER_QUERY"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "OPCOUNTER_INSERT"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "C",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "OPCOUNTER_UPDATE"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "D",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "OPCOUNTER_DELETE"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "per_sec",
+          "stackSeries": true,
+          "fillOpacity": 40
+        }
+      },
+      {
+        "name": "Operations by cluster",
+        "description": "Query operations per second.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "OPCOUNTER_QUERY"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "cluster"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "per_sec"
+        }
+      },
+      {
+        "name": "Connections by cluster",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "CONNECTIONS"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "cluster"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Connections used",
+        "description": "Of the cluster tier's connection limit.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "mongodbatlas"
+              ],
+              "resource_type": [
+                "AtlasCluster"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "project_name": [
+                "$project"
+              ],
+              "cluster": [
+                "$cluster"
+              ],
+              "metric_name": [
+                "CONNECTIONS_PERCENT"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "cluster",
+                      "process"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "org",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "mongodbatlas"
+            ],
+            "resource_type": [
+              "AtlasCluster"
+            ]
+          }
+        }
+      },
+      {
+        "name": "project",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "project_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "mongodbatlas"
+            ],
+            "resource_type": [
+              "AtlasCluster"
+            ],
+            "account_id": [
+              "$org"
+            ]
+          }
+        }
+      },
+      {
+        "name": "cluster",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "cluster",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "mongodbatlas"
+            ],
+            "resource_type": [
+              "AtlasCluster"
+            ],
+            "account_id": [
+              "$org"
+            ],
+            "project_name": [
+              "$project"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "latency",
+        "title": "Latency",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Read / write execution time",
+            "description": "Average time per operation, highest node per cluster.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OP_EXECUTION_TIME_READS"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OP_EXECUTION_TIME_WRITES"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "Read / write p99",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "READS_P99_VALUE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "WRITES_P99_VALUE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "Query targeting (scanned / returned)",
+            "description": "High values mean queries scan far more than they return; check indexes.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "QUERY_TARGETING_SCANNED_PER_RETURNED"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Read / write tickets available",
+            "description": "WiredTiger concurrency tickets. Near zero means queuing.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "TICKETS_AVAILABLE_READS"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "min",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "TICKETS_AVAILABLE_WRITE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "min",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "resources",
+        "title": "Resources",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Process CPU",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "PROCESS_CPU_USER"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Normalized system CPU",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "SYSTEM_NORMALIZED_CPU_USER"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Resident memory",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "MEMORY_RESIDENT"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "megabytes"
+            }
+          },
+          {
+            "name": "WiredTiger cache used",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "CACHE_USED_BYTES"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Network in / out",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "NETWORK_BYTES_IN"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "NETWORK_BYTES_OUT"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes/sec"
+            }
+          },
+          {
+            "name": "Replication lag",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OPLOG_REPLICATION_LAG_TIME"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "disk",
+        "title": "Disk",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Disk space used",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DISK_PARTITION_SPACE_PERCENT_USED"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Disk utilization",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DISK_PARTITION_UTILIZATION"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Disk IOPS",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DISK_PARTITION_IOPS_TOTAL"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "per_sec"
+            }
+          },
+          {
+            "name": "Disk queue depth",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DISK_QUEUE_DEPTH"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "databases",
+        "title": "Databases",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Largest databases (data size)",
+            "description": "Needs database metrics on the integration.",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasDatabase"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DATABASE_DATA_SIZE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "database"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Largest indexes",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasDatabase"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DATABASE_INDEX_SIZE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "database"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Storage size by database",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasDatabase"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DATABASE_STORAGE_SIZE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "database"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 12,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Documents returned / inserted / updated / deleted",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DOCUMENT_METRICS_RETURNED"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DOCUMENT_METRICS_INSERTED"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "C",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DOCUMENT_METRICS_UPDATED"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "D",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DOCUMENT_METRICS_DELETED"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "per_sec"
+            }
+          },
+          {
+            "name": "Getmore / command ops",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OPCOUNTER_GETMORE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OPCOUNTER_CMD"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "per_sec"
+            }
+          },
+          {
+            "name": "Scanned keys / documents",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "QUERY_EXECUTOR_SCANNED"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "QUERY_EXECUTOR_SCANNED_OBJECTS"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "per_sec"
+            }
+          },
+          {
+            "name": "Scan and order",
+            "description": "In-memory sorts; an index can usually remove them. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OPERATIONS_SCAN_AND_ORDER"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "per_sec"
+            }
+          },
+          {
+            "name": "Open cursors / timed out",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "CURSORS_TOTAL_OPEN"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "CURSORS_TOTAL_TIMED_OUT"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Global lock queue",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "GLOBAL_LOCK_CURRENT_QUEUE_TOTAL"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster",
+                          "process"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Cache fill / dirty fill",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "CACHE_FILL_RATIO"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "DIRTY_FILL_RATIO"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Cache bytes read into / written from",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "CACHE_BYTES_READ_INTO"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "CACHE_BYTES_WRITTEN_FROM"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes/sec"
+            }
+          },
+          {
+            "name": "Asserts",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "ASSERT_REGULAR"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "ASSERT_WARNING"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "C",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "ASSERT_USER"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "per_sec"
+            }
+          },
+          {
+            "name": "Transactions open / active",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "TRANSACTIONS_CURRENT_OPEN"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "TRANSACTIONS_CURRENT_ACTIVE"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Oplog window",
+            "description": "Hours of operations the oplog holds; a short window risks resyncs. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OPLOG_MASTER_TIME"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "min",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Oplog rate",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "mongodbatlas"
+                  ],
+                  "resource_type": [
+                    "AtlasCluster"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "project_name": [
+                    "$project"
+                  ],
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "metric_name": [
+                    "OPLOG_RATE_GB_PER_HOUR"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "cluster"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "gigabytes_per_hour"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "6",
+            "x": 0,
+            "y": 12,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "7",
+            "x": 6,
+            "y": 12,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "8",
+            "x": 0,
+            "y": 16,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "9",
+            "x": 6,
+            "y": 16,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "10",
+            "x": 0,
+            "y": 20,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "11",
+            "x": 6,
+            "y": 20,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-latency",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 9
+      },
+      {
+        "i": "sg-resources",
+        "x": 0,
+        "y": 19,
+        "w": 12,
+        "h": 13
+      },
+      {
+        "i": "sg-disk",
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 9
+      },
+      {
+        "i": "sg-databases",
+        "x": 0,
+        "y": 41,
+        "w": 12,
+        "h": 9
+      },
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 50,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}
