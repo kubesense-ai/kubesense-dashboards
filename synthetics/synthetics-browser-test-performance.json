@@ -254,105 +254,65 @@
       },
       {
         "name": "Average run duration",
-        "description": "Mean total run time of a browser run.",
+        "description": "Mean duration of the browser runs over the whole time range (run-duration histogram sum ÷ count).",
         "panelType": "stat",
         "queries": [
           {
-            "selectedMode": "synthetics",
+            "selectedMode": "metrics",
             "label": "A",
-            "columnFields": [],
-            "groupBy": [],
-            "aggregation": {
-              "function": "avg",
-              "fields": [
-                {
-                  "field": "total_ms",
-                  "type": "float",
-                  "is_attribute": false
-                }
-              ]
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])) * 1000",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
             },
-            "chart_type": "stat",
-            "filterMode": "MFD",
-            "filters": {
-              "labels.env": [
-                "$env"
-              ],
-              "labels.team": [
-                "$team"
-              ],
-              "labels.service": [
-                "$service"
-              ],
-              "monitor_name": [
-                "$monitor"
-              ],
-              "location": [
-                "$location"
-              ],
-              "check_type": [
-                "BROWSER"
-              ]
-            }
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
           }
         ],
         "config": {
           "yAxisLabelFormatter": "milliseconds",
           "valueOptions": {
             "show": "calculate",
-            "calculation": "mean"
+            "calculation": "last"
           }
         }
       },
       {
         "name": "p95 run duration",
-        "description": "95th percentile total run time of a browser run.",
+        "description": "95th percentile of browser run duration over the whole time range, estimated from the run-duration histogram (buckets up to 30 s: anything slower shows as 30 s).",
         "panelType": "stat",
         "queries": [
           {
-            "selectedMode": "synthetics",
+            "selectedMode": "metrics",
             "label": "A",
-            "columnFields": [],
-            "groupBy": [],
-            "aggregation": {
-              "function": "p95",
-              "fields": [
-                {
-                  "field": "total_ms",
-                  "type": "float",
-                  "is_attribute": false
-                }
-              ]
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "histogram_quantile(0.95, sum by (le) (increase(kubesense_synthetics_run_duration_seconds_bucket{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter]))) * 1000",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
             },
-            "chart_type": "stat",
-            "filterMode": "MFD",
-            "filters": {
-              "labels.env": [
-                "$env"
-              ],
-              "labels.team": [
-                "$team"
-              ],
-              "labels.service": [
-                "$service"
-              ],
-              "monitor_name": [
-                "$monitor"
-              ],
-              "location": [
-                "$location"
-              ],
-              "check_type": [
-                "BROWSER"
-              ]
-            }
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
           }
         ],
         "config": {
           "yAxisLabelFormatter": "milliseconds",
           "valueOptions": {
             "show": "calculate",
-            "calculation": "mean"
+            "calculation": "last"
           }
         }
       },
@@ -373,7 +333,9 @@
             }
           }
         ],
-        "config": {}
+        "config": {
+          "yAxisLabelFormatter": "milliseconds"
+        }
       },
       {
         "name": "Runs by result",
@@ -576,10 +538,20 @@
               "status": [
                 "failure"
               ]
+            },
+            "sorting": {
+              "sortBy": {
+                "field": "",
+                "type": "string",
+                "is_attribute": false
+              },
+              "sortOrder": "DESC"
             }
           }
         ],
-        "config": {}
+        "config": {
+          "yAxisLabelFormatter": "milliseconds"
+        }
       },
       {
         "name": "Failures over time by error type",
@@ -656,6 +628,14 @@
               "check_type": [
                 "BROWSER"
               ]
+            },
+            "sorting": {
+              "sortBy": {
+                "field": "",
+                "type": "string",
+                "is_attribute": false
+              },
+              "sortOrder": "DESC"
             }
           }
         ],
@@ -785,7 +765,9 @@
             }
           }
         ],
-        "config": {}
+        "config": {
+          "yAxisLabelFormatter": "milliseconds"
+        }
       }
     ],
     "variables": [

@@ -351,53 +351,33 @@
         "panels": [
           {
             "name": "Average response time (HTTP)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean HTTP run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"HTTP\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"HTTP\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "HTTP"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -515,53 +495,33 @@
         "panels": [
           {
             "name": "Average response time (SSL)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean SSL run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"SSL\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"SSL\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "SSL"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -679,53 +639,33 @@
         "panels": [
           {
             "name": "Average response time (TCP)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean TCP run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"TCP\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"TCP\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "TCP"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -843,53 +783,33 @@
         "panels": [
           {
             "name": "Average response time (WebSocket)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean WEBSOCKET run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"WEBSOCKET\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"WEBSOCKET\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "WEBSOCKET"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -1007,53 +927,33 @@
         "panels": [
           {
             "name": "Average response time (DNS)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean DNS run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"DNS\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"DNS\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "DNS"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -1171,53 +1071,33 @@
         "panels": [
           {
             "name": "Average response time (UDP)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean UDP run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"UDP\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"UDP\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "UDP"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -1300,53 +1180,33 @@
         "panels": [
           {
             "name": "Average response time (ICMP)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean PING run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"PING\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"PING\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "PING"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -1551,53 +1411,33 @@
         "panels": [
           {
             "name": "Average response time (gRPC)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean GRPC run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"GRPC\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"GRPC\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "GRPC"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -1715,53 +1555,33 @@
         "panels": [
           {
             "name": "Average response time (MCP)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean MCP run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"MCP\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"MCP\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "MCP"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
@@ -1879,53 +1699,33 @@
         "panels": [
           {
             "name": "Average response time (Network path)",
-            "description": "Mean total run time of the selected time range.",
+            "description": "Mean NETWORK_PATH run duration over the whole time range (run-duration histogram sum ÷ count).",
             "panelType": "stat",
             "queries": [
               {
-                "selectedMode": "synthetics",
+                "selectedMode": "metrics",
                 "label": "A",
-                "columnFields": [],
-                "groupBy": [],
-                "aggregation": {
-                  "function": "avg",
-                  "fields": [
-                    {
-                      "field": "total_ms",
-                      "type": "float",
-                      "is_attribute": false
-                    }
-                  ]
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum (increase(kubesense_synthetics_run_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"NETWORK_PATH\"}[$__time_filter])) / sum (increase(kubesense_synthetics_run_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"NETWORK_PATH\"}[$__time_filter])) * 1000",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
                 },
-                "chart_type": "stat",
-                "filterMode": "MFD",
-                "filters": {
-                  "labels.env": [
-                    "$env"
-                  ],
-                  "labels.team": [
-                    "$team"
-                  ],
-                  "labels.service": [
-                    "$service"
-                  ],
-                  "monitor_name": [
-                    "$monitor"
-                  ],
-                  "location": [
-                    "$location"
-                  ],
-                  "check_type": [
-                    "NETWORK_PATH"
-                  ]
-                }
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
               }
             ],
             "config": {
               "yAxisLabelFormatter": "milliseconds",
               "valueOptions": {
                 "show": "calculate",
-                "calculation": "mean"
+                "calculation": "last"
               }
             }
           },
