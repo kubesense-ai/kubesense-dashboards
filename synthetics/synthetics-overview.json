@@ -1,0 +1,624 @@
+{
+  "meta": {
+    "key": "synthetics-overview",
+    "version": 1,
+    "integration_id": "synthetics",
+    "tags": [
+      "synthetics",
+      "uptime",
+      "overview"
+    ]
+  },
+  "name": "Synthetics Overview",
+  "description": "Uptime, state, failures, run time and certificate expiry across every synthetic monitor.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 2,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 4,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 8,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "5",
+        "x": 10,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 2,
+        "w": 3,
+        "h": 6
+      },
+      {
+        "i": "7",
+        "x": 3,
+        "y": 2,
+        "w": 5,
+        "h": 6
+      },
+      {
+        "i": "8",
+        "x": 8,
+        "y": 2,
+        "w": 4,
+        "h": 6
+      },
+      {
+        "i": "9",
+        "x": 0,
+        "y": 8,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "10",
+        "x": 6,
+        "y": 8,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "11",
+        "x": 0,
+        "y": 12,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "12",
+        "x": 6,
+        "y": 12,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "13",
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 5
+      },
+      {
+        "i": "14",
+        "x": 6,
+        "y": 16,
+        "w": 6,
+        "h": 5
+      }
+    ],
+    "panels": [
+      {
+        "name": "Monitors",
+        "description": "Monitors reporting a state. Paused monitors and those with no result yet are not counted.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count(max by (monitor_id) (kubesense_synthetics_monitor_status{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Up",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count(max by (monitor_id) (kubesense_synthetics_monitor_status{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}) == 0) or vector(0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "success"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Degraded",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count(max by (monitor_id) (kubesense_synthetics_monitor_status{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}) == 1) or vector(0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Down",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count(max by (monitor_id) (kubesense_synthetics_monitor_status{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}) == 2) or vector(0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "No data",
+        "description": "Monitors whose locations returned no result in time.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count(max by (monitor_id) (kubesense_synthetics_monitor_status{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}) == 3) or vector(0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Failed runs",
+        "description": "Failed check runs over the selected time range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(increase(kubesense_synthetics_runs_total{status=\"failure\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}[$__time_filter])) or vector(0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Fleet uptime",
+        "description": "Uptime of every monitor over the dashboard's time range, with the count in each state. Monitor widgets cover all monitors (the first 100 by name); the env, team, service and check type pickers narrow the other panels.",
+        "panelType": "syntheticsMonitor",
+        "queries": [
+          {
+            "selectedMode": "synthetics_monitor",
+            "label": "A",
+            "visible": true,
+            "widgetType": "single"
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Monitor status",
+        "description": "Each monitor's current state beside its uptime, worst first.",
+        "panelType": "syntheticsMonitor",
+        "queries": [
+          {
+            "selectedMode": "synthetics_monitor",
+            "label": "A",
+            "visible": true,
+            "widgetType": "status_list",
+            "display": {
+              "sort": "state"
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Uptime by monitor, lowest first",
+        "description": "Uptime over the dashboard's time range against the 99.9% / 99% thresholds, with apdex where the monitor has a threshold.",
+        "panelType": "syntheticsMonitor",
+        "queries": [
+          {
+            "selectedMode": "synthetics_monitor",
+            "label": "A",
+            "visible": true,
+            "widgetType": "uptime",
+            "display": {
+              "sort": "uptime",
+              "showApdex": true
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Failed runs by check type",
+        "description": "Failed runs per interval.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (check_type) (increase(kubesense_synthetics_runs_total{status=\"failure\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Failed runs by location",
+        "description": "Failed runs per interval, by the location that ran them (local = synthetics-api itself).",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (location) (increase(kubesense_synthetics_runs_total{status=\"failure\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Run duration p95 by location",
+        "description": "95th percentile of the total run time, estimated from the run-duration histogram (buckets 50ms to 30s).",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "histogram_quantile(0.95, sum by (location, le) (rate(kubesense_synthetics_run_duration_seconds_bucket{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}[$__rate_interval])))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "seconds"
+        }
+      },
+      {
+        "name": "Runs by result",
+        "description": "Check runs per minute, success and failure.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (status) (rate(kubesense_synthetics_runs_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}[$__rate_interval])) * 60",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "SSL certificates expiring within 30 days",
+        "description": "Days until the certificate seen by each monitor's last run expires; negative once expired.",
+        "panelType": "table",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sort(min by (monitor_name, location) (kubesense_synthetics_ssl_cert_expiry_days{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}) < 30)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "days left"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Monitors with the most failed runs",
+        "description": "Failed runs over the selected time range.",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "topk(10, sum by (monitor_name) (increase(kubesense_synthetics_runs_total{status=\"failure\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", check_type=~\"$check_type\"}[$__time_filter])) > 0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "env",
+        "description": "Monitor label env.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "label_env",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "team",
+        "description": "Monitor label team.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "label_team",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "service",
+        "description": "Monitor label service.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "label_service",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "check_type",
+        "description": "Check type: HTTP, TCP, DNS, ...",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "check_type",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      }
+    ],
+    "subGrids": [],
+    "subGridLayout": []
+  }
+}

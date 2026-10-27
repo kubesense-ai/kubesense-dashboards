@@ -1,0 +1,928 @@
+{
+  "meta": {
+    "key": "synthetics-private-location-health",
+    "version": 1,
+    "integration_id": "synthetics",
+    "tags": [
+      "synthetics",
+      "private-locations",
+      "health"
+    ]
+  },
+  "name": "Private Location Health",
+  "description": "Probe agents and check health per location, and the synthetics-api delivery of platform series and results. Agent, remote-write and results-writer panels read synthetics-api's own metrics, which reach the platform TSDB only when its ServiceMonitor scraping is enabled.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 2,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 4,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 6,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 8,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "5",
+        "x": 10,
+        "y": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "8",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "9",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "10",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "11",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "12",
+        "x": 0,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "13",
+        "x": 6,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "14",
+        "x": 0,
+        "y": 18,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "i": "15",
+        "x": 4,
+        "y": 18,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "i": "16",
+        "x": 8,
+        "y": 18,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "i": "17",
+        "x": 0,
+        "y": 22,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "18",
+        "x": 6,
+        "y": 22,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "i": "19",
+        "x": 9,
+        "y": 22,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "i": "20",
+        "x": 0,
+        "y": 26,
+        "w": 12,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Agents online",
+        "description": "Registered probe agents that are online. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(max by (location) (synthetics_probe_agents{status=\"online\", location=~\"$location\"}))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "success"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Agents offline",
+        "description": "Registered probe agents that are offline. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(max by (location) (synthetics_probe_agents{status=\"offline\", location=~\"$location\"}))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Locations with a down check",
+        "description": "Locations where at least one monitor is down.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count(max by (location) (kubesense_synthetics_location_status{location=~\"$location\"}) == 2) or vector(0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Remote-write queue",
+        "description": "Remote-write requests waiting to be sent to the platform TSDB. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "max(synthetics_remote_write_queue_length)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Since last remote write",
+        "description": "Time since the leader last delivered platform series. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "time() - max(synthetics_remote_write_last_success_timestamp_seconds > 0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "seconds",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Leader replicas",
+        "description": "Replicas holding the leader lease; exactly 1 is healthy. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(synthetics_leader)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Agents online by location",
+        "description": "Every replica reports the same registry counts, hence max. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "max by (location) (synthetics_probe_agents{status=\"online\", location=~\"$location\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Agents offline by location",
+        "description": "Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "max by (location) (synthetics_probe_agents{status=\"offline\", location=~\"$location\"}) > 0",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Worst check state by location",
+        "description": "The worst state of any monitor at the location: 0 up, 1 degraded, 2 down, 3 no data.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "max by (location) (kubesense_synthetics_location_status{location=~\"$location\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Monitors down by location",
+        "description": "Monitors whose checks from the location are down right now.",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count by (location) (kubesense_synthetics_location_status{location=~\"$location\"} == 2)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Runs by location",
+        "description": "Check runs per minute. A location that stops running checks drops to zero.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (location) (rate(kubesense_synthetics_runs_total{location=~\"$location\"}[$__rate_interval])) * 60",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Failure ratio by location",
+        "description": "Share of runs that failed.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (location) (rate(kubesense_synthetics_runs_total{status=\"failure\", location=~\"$location\"}[$__rate_interval])) / sum by (location) (rate(kubesense_synthetics_runs_total{location=~\"$location\"}[$__rate_interval])) * 100",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage"
+        }
+      },
+      {
+        "name": "Remote-write samples",
+        "description": "Platform series samples sent to and dropped before the platform TSDB, per second. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(rate(synthetics_remote_write_samples_sent_total[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "sent"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (reason) (rate(synthetics_remote_write_samples_dropped_total[$__rate_interval])) > 0",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "dropped {{reason}}"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "per_sec"
+        }
+      },
+      {
+        "name": "Remote-write send failures",
+        "description": "Failed remote-write HTTP attempts per second; each retry counts. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(rate(synthetics_remote_write_send_failures_total[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "per_sec"
+        }
+      },
+      {
+        "name": "Remote-write queue length",
+        "description": "Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "max(synthetics_remote_write_queue_length)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Time since last remote write",
+        "description": "Stays near the remote-write interval while delivery works. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "time() - max(synthetics_remote_write_last_success_timestamp_seconds > 0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "seconds"
+        }
+      },
+      {
+        "name": "Platform series",
+        "description": "Series the leader writes, and new series refused by the series cap. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "max(synthetics_remote_write_active_series)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "active"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(rate(synthetics_remote_write_series_dropped_total[$__rate_interval])) > 0",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "refused by the cap"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Results writer",
+        "description": "Check results written to the platform's results table (the synthetics Explore source), per second. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(rate(synthetics_platform_results_written_total[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "written"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (reason) (rate(synthetics_platform_results_dropped_total[$__rate_interval])) > 0",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "dropped {{reason}}"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "C",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(rate(synthetics_platform_results_insert_failures_total[$__rate_interval])) > 0",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "insert failures"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "per_sec"
+        }
+      },
+      {
+        "name": "Results writer lag",
+        "description": "Time since the last successful results insert. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "time() - max(synthetics_platform_results_last_success_timestamp_seconds > 0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "since last write"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "seconds"
+        }
+      },
+      {
+        "name": "Results writer queue",
+        "description": "Results waiting to be written. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "max(synthetics_platform_results_queue_length)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Backing stores up",
+        "description": "1 while the last ping of each backing store succeeded, 0 otherwise. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "min by (store) (synthetics_store_up)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "location",
+        "description": "Location id (the agent id for an agent with no location; local = synthetics-api itself).",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_location_status",
+          "fieldMeta": {
+            "field": "location",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      }
+    ],
+    "subGrids": [],
+    "subGridLayout": []
+  }
+}
