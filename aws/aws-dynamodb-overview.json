@@ -1,0 +1,1473 @@
+{
+  "meta": {
+    "key": "aws-dynamodb-overview",
+    "version": 1,
+    "integration_id": "aws",
+    "tags": [
+      "aws",
+      "dynamodb",
+      "database"
+    ]
+  },
+  "name": "AWS DynamoDB Overview",
+  "description": "Capacity, throttling, latency and errors for DynamoDB tables.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Tables reporting",
+        "description": "Resources with a ConsumedReadCapacityUnits datapoint in the selected range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ConsumedReadCapacityUnits"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Read capacity (last 5 min)",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ConsumedReadCapacityUnits"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Write capacity (last 5 min)",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ConsumedWriteCapacityUnits"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Throttled requests (last 5 min)",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ThrottledRequests"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Consumed read capacity",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ConsumedReadCapacityUnits"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Consumed write capacity",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ConsumedWriteCapacityUnits"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Throttled requests",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ThrottledRequests"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Hottest tables by reads",
+        "description": "",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "DynamoDbTable"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "ConsumedReadCapacityUnits"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "account",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "aws"
+            ],
+            "resource_type": [
+              "DynamoDbTable"
+            ]
+          }
+        }
+      },
+      {
+        "name": "region",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "region",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "aws"
+            ],
+            "resource_type": [
+              "DynamoDbTable"
+            ],
+            "account_id": [
+              "$account"
+            ]
+          }
+        }
+      },
+      {
+        "name": "resource",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "resource_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "aws"
+            ],
+            "resource_type": [
+              "DynamoDbTable"
+            ],
+            "account_id": [
+              "$account"
+            ],
+            "region": [
+              "$region"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "operations",
+        "title": "Operations",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Request latency by operation",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "SuccessfulRequestLatency"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name",
+                          "operation"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "System errors by operation",
+            "description": "Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "SystemErrors"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name",
+                          "operation"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Returned items by operation",
+            "description": "Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ReturnedItemCount"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name",
+                          "operation"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Provisioned vs consumed reads",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ProvisionedReadCapacityUnits"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ConsumedReadCapacityUnits"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Provisioned vs consumed writes",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ProvisionedWriteCapacityUnits"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ConsumedWriteCapacityUnits"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Read / write throttle events",
+            "description": "Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ReadThrottleEvents"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "WriteThrottleEvents"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Conditional check failures",
+            "description": "Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ConditionalCheckFailedRequests"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Transaction conflicts",
+            "description": "Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "TransactionConflict"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Global table replication age",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "DynamoDbTable"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "AgeOfOldestUnreplicatedRecord"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-operations",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 9
+      },
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 19,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}

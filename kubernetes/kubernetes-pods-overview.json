@@ -1,0 +1,732 @@
+{
+  "meta": {
+    "key": "kubernetes-pods-overview",
+    "version": 1,
+    "tags": [
+      "kubernetes",
+      "pods"
+    ]
+  },
+  "name": "Kubernetes Pods Overview",
+  "description": "Phase, restarts, waiting reasons and CPU, memory and network for pods.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "8",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "9",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "10",
+        "x": 0,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "11",
+        "x": 6,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "12",
+        "x": 0,
+        "y": 18,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "13",
+        "x": 6,
+        "y": 18,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "14",
+        "x": 0,
+        "y": 22,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "15",
+        "x": 6,
+        "y": 22,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Running",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_pod_status_phase{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", phase=\"Running\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "success"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Pending",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_pod_status_phase{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", phase=\"Pending\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Failed",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_pod_status_phase{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", phase=\"Failed\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "CrashLoopBackOff",
+        "description": "Containers waiting in CrashLoopBackOff.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_pod_container_status_waiting_reason{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", reason=\"CrashLoopBackOff\"}) or vector(0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "CPU usage",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "CPU"
+        }
+      },
+      {
+        "name": "Memory usage",
+        "description": "Working set.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (container_memory_working_set_bytes{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "CPU usage vs limit",
+        "description": "Pods with a CPU limit only.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"}[$__rate_interval])) / sum by (namespace, pod) (kube_pod_container_resource_limits{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", resource=\"cpu\"}) * 100",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage"
+        }
+      },
+      {
+        "name": "Memory usage vs limit",
+        "description": "Pods with a memory limit only. Near 100% risks an OOM kill.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (container_memory_working_set_bytes{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"}) / sum by (namespace, pod) (kube_pod_container_resource_limits{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", resource=\"memory\"}) * 100",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage"
+        }
+      },
+      {
+        "name": "CPU throttling",
+        "description": "Share of CFS periods in which the pod was throttled.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (rate(container_cpu_cfs_throttled_periods_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"}[$__rate_interval])) / sum by (namespace, pod) (rate(container_cpu_cfs_periods_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"}[$__rate_interval])) * 100",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage"
+        }
+      },
+      {
+        "name": "Container restarts",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (increase(kube_pod_container_status_restarts_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Network received",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (rate(container_network_receive_bytes_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container=\"\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes/sec"
+        }
+      },
+      {
+        "name": "Network sent",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (rate(container_network_transmit_bytes_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container=\"\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes/sec"
+        }
+      },
+      {
+        "name": "Containers not ready",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, pod) (kube_pod_container_status_ready{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\"} == 0)",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Waiting containers by reason",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (reason) (kube_pod_container_status_waiting_reason{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Last termination reason",
+        "description": "OOMKilled, Error, Completed and so on.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (reason) (kube_pod_container_status_last_terminated_reason{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Filesystem reads / writes",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(rate(container_fs_reads_bytes_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "read"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(rate(container_fs_writes_bytes_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", pod=~\"$pod\", container!=\"\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "write"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes/sec"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "cluster",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kube_node_info",
+          "fieldMeta": {
+            "field": "clusterId",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "namespace",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kube_pod_info",
+          "fieldMeta": {
+            "field": "namespace",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "clusterId": [
+              "$cluster"
+            ]
+          }
+        }
+      },
+      {
+        "name": "workload",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kube_pod_info",
+          "fieldMeta": {
+            "field": "workload",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "clusterId": [
+              "$cluster"
+            ],
+            "namespace": [
+              "$namespace"
+            ]
+          }
+        }
+      },
+      {
+        "name": "pod",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kube_pod_info",
+          "fieldMeta": {
+            "field": "pod",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "clusterId": [
+              "$cluster"
+            ],
+            "namespace": [
+              "$namespace"
+            ],
+            "workload": [
+              "$workload"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [],
+    "subGridLayout": []
+  }
+}

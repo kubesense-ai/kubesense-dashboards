@@ -1,0 +1,1287 @@
+{
+  "meta": {
+    "key": "aws-apigateway-overview",
+    "version": 1,
+    "integration_id": "aws",
+    "tags": [
+      "aws",
+      "apigateway"
+    ]
+  },
+  "name": "AWS API Gateway Overview",
+  "description": "Requests, latency and errors for REST, HTTP and WebSocket APIs.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "APIs reporting",
+        "description": "Resources with a Count datapoint in the selected range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "Count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Requests (last 5 min)",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "Count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "5XX (last 5 min)",
+        "description": "REST APIs. Sum over each 5-minute CloudWatch period.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "5XXError"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Average latency",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "Latency"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "milliseconds",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "mean"
+          }
+        }
+      },
+      {
+        "name": "Requests",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "Count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Latency / integration latency",
+        "description": "Integration latency is the time spent in the backend.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "Latency"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "IntegrationLatency"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "milliseconds"
+        }
+      },
+      {
+        "name": "4XX / 5XX (REST)",
+        "description": "Sum over each 5-minute CloudWatch period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "4XXError"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "5XXError"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "4xx / 5xx (HTTP)",
+        "description": "HTTP APIs. Sum over each 5-minute CloudWatch period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "4xx"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "aws"
+              ],
+              "resource_type": [
+                "ApiGatewayApi"
+              ],
+              "account_id": [
+                "$account"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "5xx"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "account",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "aws"
+            ],
+            "resource_type": [
+              "ApiGatewayApi"
+            ]
+          }
+        }
+      },
+      {
+        "name": "region",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "region",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "aws"
+            ],
+            "resource_type": [
+              "ApiGatewayApi"
+            ],
+            "account_id": [
+              "$account"
+            ]
+          }
+        }
+      },
+      {
+        "name": "resource",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "resource_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "aws"
+            ],
+            "resource_type": [
+              "ApiGatewayApi"
+            ],
+            "account_id": [
+              "$account"
+            ],
+            "region": [
+              "$region"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "websocket-apis",
+        "title": "WebSocket APIs",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Connections and messages",
+            "description": "Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "ApiGatewayApi"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ConnectCount"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "ApiGatewayApi"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "MessageCount"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Client / execution / integration errors",
+            "description": "Sum over each 5-minute CloudWatch period.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "ApiGatewayApi"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ClientError"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "ApiGatewayApi"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "ExecutionError"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "C",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "ApiGatewayApi"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "IntegrationError"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Cache hits / misses",
+            "description": "Sum over each 5-minute CloudWatch period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "ApiGatewayApi"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "CacheHitCount"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "success"
+                  }
+                }
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "ApiGatewayApi"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "CacheMissCount"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-websocket-apis",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 11,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,1322 @@
+{
+  "meta": {
+    "key": "gcp-compute-overview",
+    "version": 1,
+    "integration_id": "gcp",
+    "tags": [
+      "gcp",
+      "compute",
+      "gce"
+    ]
+  },
+  "name": "GCP Compute Engine Overview",
+  "description": "CPU, network and disk for Compute Engine instances.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "8",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "9",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Instances reporting",
+        "description": "Resources with a cpu_utilization datapoint in the selected range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "cpu_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Average CPU",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "cpu_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentunit",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "mean"
+          }
+        }
+      },
+      {
+        "name": "Peak CPU",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "cpu_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentunit",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "max"
+          }
+        }
+      },
+      {
+        "name": "Network received",
+        "description": "Mean of Cloud Monitoring's samples over each 5-minute period.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "network_received_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "CPU utilization",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "cpu_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentunit"
+        }
+      },
+      {
+        "name": "Busiest instances by CPU",
+        "description": "",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "cpu_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentunit"
+        }
+      },
+      {
+        "name": "Network received",
+        "description": "Mean of Cloud Monitoring's samples over each 5-minute period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "network_received_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "Network sent",
+        "description": "Mean of Cloud Monitoring's samples over each 5-minute period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "network_sent_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "Disk read bytes",
+        "description": "Mean of Cloud Monitoring's samples over each 5-minute period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "disk_read_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "Disk write bytes",
+        "description": "Mean of Cloud Monitoring's samples over each 5-minute period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "GceInstance"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "disk_write_bytes"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "project",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "GceInstance"
+            ]
+          }
+        }
+      },
+      {
+        "name": "region",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "region",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "GceInstance"
+            ],
+            "account_id": [
+              "$project"
+            ]
+          }
+        }
+      },
+      {
+        "name": "resource",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "resource_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "GceInstance"
+            ],
+            "account_id": [
+              "$project"
+            ],
+            "region": [
+              "$region"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Disk read / write ops",
+            "description": "Mean of Cloud Monitoring's samples over each 5-minute period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "disk_read_ops"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "disk_write_ops"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Network packets received / sent",
+            "description": "Mean of Cloud Monitoring's samples over each 5-minute period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "network_received_packets"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "network_sent_packets"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Firewall dropped packets",
+            "description": "Mean of Cloud Monitoring's samples over each 5-minute period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "firewall_dropped_packets"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Firewall dropped bytes",
+            "description": "Mean of Cloud Monitoring's samples over each 5-minute period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "firewall_dropped_bytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Reserved cores",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "cpu_reserved_cores"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "CPU"
+            }
+          },
+          {
+            "name": "Uptime",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "GceInstance"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "uptime_seconds"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 14,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}

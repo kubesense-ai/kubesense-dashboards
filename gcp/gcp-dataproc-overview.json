@@ -1,0 +1,917 @@
+{
+  "meta": {
+    "key": "gcp-dataproc-overview",
+    "version": 1,
+    "integration_id": "gcp",
+    "tags": [
+      "gcp",
+      "dataproc"
+    ]
+  },
+  "name": "GCP Dataproc Overview",
+  "description": "HDFS and job activity for Dataproc clusters.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "4",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Clusters reporting",
+        "description": "Resources with a hdfs_storage_utilization datapoint in the selected range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "DataprocCluster"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "hdfs_storage_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Running jobs",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "DataprocCluster"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "job_running_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Highest HDFS utilization",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "DataprocCluster"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "hdfs_storage_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentunit",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "HDFS storage utilization",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "DataprocCluster"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "hdfs_storage_utilization"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentunit"
+        }
+      },
+      {
+        "name": "Running jobs",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "DataprocCluster"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "job_running_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "project",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "DataprocCluster"
+            ]
+          }
+        }
+      },
+      {
+        "name": "region",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "region",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "DataprocCluster"
+            ],
+            "account_id": [
+              "$project"
+            ]
+          }
+        }
+      },
+      {
+        "name": "resource",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "resource_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "DataprocCluster"
+            ],
+            "account_id": [
+              "$project"
+            ],
+            "region": [
+              "$region"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Submitted / failed jobs",
+            "description": "Mean of Cloud Monitoring's samples over each 5-minute period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "DataprocCluster"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "job_submitted_count"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "DataprocCluster"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "job_failed_count"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "YARN memory allocated",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "DataprocCluster"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "yarn_allocated_memory_pct"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "avg",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentunit"
+            }
+          },
+          {
+            "name": "YARN node managers / HDFS datanodes",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "DataprocCluster"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "yarn_nodemanagers"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "DataprocCluster"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "hdfs_datanodes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "HDFS unhealthy blocks",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "DataprocCluster"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "hdfs_unhealthy_blocks"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "YARN pending containers",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "DataprocCluster"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "yarn_pending_containers"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 6,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}

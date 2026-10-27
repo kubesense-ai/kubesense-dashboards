@@ -1,0 +1,605 @@
+{
+  "meta": {
+    "key": "kubernetes-statefulsets-overview",
+    "version": 1,
+    "tags": [
+      "kubernetes",
+      "statefulsets",
+      "workloads"
+    ]
+  },
+  "name": "Kubernetes StatefulSets Overview",
+  "description": "Replica health, rollouts and resource usage for StatefulSets.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "StatefulSets",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "count(kube_statefulset_replicas{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Desired replicas",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_statefulset_replicas{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Ready replicas",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_statefulset_status_replicas_ready{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "success"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Not ready",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_statefulset_replicas{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"}) - sum(kube_statefulset_status_replicas_ready{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Desired vs ready",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_statefulset_replicas{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "desired"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum(kube_statefulset_status_replicas_ready{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "ready"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "success"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Replicas not ready",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, statefulset) (kube_statefulset_replicas{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"} - kube_statefulset_status_replicas_ready{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"}) > 0",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Updated vs current replicas",
+        "description": "They differ during a rolling update.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, statefulset) (kube_statefulset_status_replicas_updated{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "{{statefulset}} updated"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, statefulset) (kube_statefulset_status_replicas_current{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"})",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "custom",
+              "format": "{{statefulset}} current"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Rollouts in progress",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (namespace, statefulset) (kube_statefulset_metadata_generation{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"} - kube_statefulset_status_observed_generation{clusterId=\"$cluster\", namespace=\"$namespace\", statefulset=~\"$statefulset\"}) > 0",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "cluster",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kube_node_info",
+          "fieldMeta": {
+            "field": "clusterId",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "namespace",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kube_pod_info",
+          "fieldMeta": {
+            "field": "namespace",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "clusterId": [
+              "$cluster"
+            ]
+          }
+        }
+      },
+      {
+        "name": "statefulset",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kube_statefulset_replicas",
+          "fieldMeta": {
+            "field": "statefulset",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "clusterId": [
+              "$cluster"
+            ],
+            "namespace": [
+              "$namespace"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "resource-usage",
+        "title": "Resource usage",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "CPU usage",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (namespace, workload) (rate(container_cpu_usage_seconds_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$statefulset\", container!=\"\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "CPU"
+            }
+          },
+          {
+            "name": "Memory usage",
+            "description": "Working set.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (namespace, workload) (container_memory_working_set_bytes{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$statefulset\", container!=\"\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Container restarts",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (namespace, workload) (increase(kube_pod_container_status_restarts_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$statefulset\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "CPU throttling",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (namespace, workload) (rate(container_cpu_cfs_throttled_periods_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$statefulset\", container!=\"\"}[$__rate_interval])) / sum by (namespace, workload) (rate(container_cpu_cfs_periods_total{clusterId=\"$cluster\", namespace=\"$namespace\", workload=~\"$statefulset\", container!=\"\"}[$__rate_interval])) * 100",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-resource-usage",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 9
+      }
+    ]
+  }
+}

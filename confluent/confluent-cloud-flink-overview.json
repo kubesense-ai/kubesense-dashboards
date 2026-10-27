@@ -1,0 +1,1263 @@
+{
+  "meta": {
+    "key": "confluent-cloud-flink-overview",
+    "version": 1,
+    "integration_id": "confluent",
+    "tags": [
+      "confluent",
+      "kafka",
+      "flink"
+    ]
+  },
+  "name": "Confluent Cloud Flink Overview",
+  "description": "CFU usage, throughput and backlog for Flink compute pools.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Compute pools reporting",
+        "description": "Resources reporting in the selected range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/compute_pool_utilization/current_cfus"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Current CFUs",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/compute_pool_utilization/current_cfus"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Pending records",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/pending_records"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Records in errors",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/num_records_in_errors"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "CFUs used vs limit",
+        "description": "Confluent Flink Units.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/compute_pool_utilization/current_cfus"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/compute_pool_utilization/cfu_limit"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "avg",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "error"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "CFU minutes consumed",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/compute_pool_utilization/cfu_minutes_consumed"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Records in / out",
+        "description": "Per minute, from the Confluent Metrics API.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/num_records_in"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          },
+          {
+            "selectedMode": "metrics",
+            "label": "B",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/num_records_out"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Pending records",
+        "description": "Backlog in the source topics.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "confluent"
+              ],
+              "resource_type": [
+                "ConfluentFlinkComputePool"
+              ],
+              "account_id": [
+                "$org"
+              ],
+              "environment": [
+                "$environment"
+              ],
+              "resource_name": [
+                "$pool"
+              ],
+              "metric_name": [
+                "io.confluent.flink/pending_records"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {
+              "color": {
+                "type": "palette",
+                "palette": "warning"
+              }
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "org",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "confluent"
+            ],
+            "resource_type": [
+              "ConfluentFlinkComputePool"
+            ]
+          }
+        }
+      },
+      {
+        "name": "environment",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "environment",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "confluent"
+            ],
+            "resource_type": [
+              "ConfluentFlinkComputePool"
+            ],
+            "account_id": [
+              "$org"
+            ]
+          }
+        }
+      },
+      {
+        "name": "pool",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "resource_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "confluent"
+            ],
+            "resource_type": [
+              "ConfluentFlinkComputePool"
+            ],
+            "account_id": [
+              "$org"
+            ],
+            "environment": [
+              "$environment"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Late records in",
+            "description": "Per minute, from the Confluent Metrics API. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentFlinkComputePool"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_name": [
+                    "$pool"
+                  ],
+                  "metric_name": [
+                    "io.confluent.flink/num_late_records_in"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "warning"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Max input lateness",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentFlinkComputePool"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_name": [
+                    "$pool"
+                  ],
+                  "metric_name": [
+                    "io.confluent.flink/max_input_lateness_milliseconds"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "Task busy / backpressured",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentFlinkComputePool"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_name": [
+                    "$pool"
+                  ],
+                  "metric_name": [
+                    "io.confluent.flink/task/busy_time_ms_per_second"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              },
+              {
+                "selectedMode": "metrics",
+                "label": "B",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentFlinkComputePool"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_name": [
+                    "$pool"
+                  ],
+                  "metric_name": [
+                    "io.confluent.flink/task/backpressure_time_ms_per_second"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "ms_per_sec"
+            }
+          },
+          {
+            "name": "Operator state size",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentFlinkComputePool"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_name": [
+                    "$pool"
+                  ],
+                  "metric_name": [
+                    "io.confluent.flink/operator/state_size_bytes"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Statement status",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentFlinkComputePool"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_name": [
+                    "$pool"
+                  ],
+                  "metric_name": [
+                    "io.confluent.flink/statement_status"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "max",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Records in errors",
+            "description": "Per minute, from the Confluent Metrics API. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "confluent"
+                  ],
+                  "resource_type": [
+                    "ConfluentFlinkComputePool"
+                  ],
+                  "account_id": [
+                    "$org"
+                  ],
+                  "environment": [
+                    "$environment"
+                  ],
+                  "resource_name": [
+                    "$pool"
+                  ],
+                  "metric_name": [
+                    "io.confluent.flink/num_records_in_errors"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {
+                  "color": {
+                    "type": "palette",
+                    "palette": "error"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 8,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,877 @@
+{
+  "meta": {
+    "key": "gcp-functions-overview",
+    "version": 1,
+    "integration_id": "gcp",
+    "tags": [
+      "gcp",
+      "functions",
+      "serverless"
+    ]
+  },
+  "name": "GCP Cloud Functions Overview",
+  "description": "Executions, execution time and memory for Cloud Functions.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Functions reporting",
+        "description": "Resources with a execution_count datapoint in the selected range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "execution_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_id"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "aggregations",
+                "name": "count",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Executions",
+        "description": "Mean of Cloud Monitoring's samples over each 5-minute period.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "execution_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Highest p99 execution time",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "execution_times_p99"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "nanoseconds",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Highest p99 memory",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "user_memory_bytes_p99"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": []
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Executions",
+        "description": "Mean of Cloud Monitoring's samples over each 5-minute period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "execution_count"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "sum",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Execution time p99",
+        "description": "99th percentile over each 5-minute period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "execution_times_p99"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "nanoseconds"
+        }
+      },
+      {
+        "name": "Memory p99",
+        "description": "99th percentile over each 5-minute period.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "user_memory_bytes_p99"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "bytes"
+        }
+      },
+      {
+        "name": "Slowest functions",
+        "description": "",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "kubesense_cloud_resource_metric",
+            "queryMode": "builder",
+            "promql": "",
+            "visible": true,
+            "filters": {
+              "provider": [
+                "gcp"
+              ],
+              "resource_type": [
+                "CloudFunction"
+              ],
+              "account_id": [
+                "$project"
+              ],
+              "region": [
+                "$region"
+              ],
+              "resource_name": [
+                "$resource"
+              ],
+              "metric_name": [
+                "execution_times_p99"
+              ]
+            },
+            "functions": [
+              {
+                "type": "aggregations",
+                "name": "max",
+                "arguments": [
+                  {
+                    "arg_name": "by",
+                    "arg_value": [
+                      "resource_name"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "nanoseconds"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "project",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "account_id",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "CloudFunction"
+            ]
+          }
+        }
+      },
+      {
+        "name": "region",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "region",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "CloudFunction"
+            ],
+            "account_id": [
+              "$project"
+            ]
+          }
+        }
+      },
+      {
+        "name": "resource",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_cloud_resource_metric",
+          "fieldMeta": {
+            "field": "resource_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "provider": [
+              "gcp"
+            ],
+            "resource_type": [
+              "CloudFunction"
+            ],
+            "account_id": [
+              "$project"
+            ],
+            "region": [
+              "$region"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "more-metrics-expanded-tier",
+        "title": "More metrics (Expanded tier)",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Active instances",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "CloudFunction"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "active_instances"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Instances",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "CloudFunction"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "instance_count"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Network egress",
+            "description": "Mean of Cloud Monitoring's samples over each 5-minute period. Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "gcp"
+                  ],
+                  "resource_type": [
+                    "CloudFunction"
+                  ],
+                  "account_id": [
+                    "$project"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "network_egress"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-more-metrics-expanded-tier",
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}
