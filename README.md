@@ -33,7 +33,7 @@ The `dev` API reads `dev`, the `test` API reads `test`, and production reads `ma
 
 - `key` is the dashboard's permanent identity. Never change it. Renaming the dashboard or moving the file is fine.
 - `version` starts at 1. Raise it whenever you change the dashboard, otherwise the API keeps the old copy. Reformatting the file, or turning a string `preset` into an object, is not a change and needs no bump.
-- `integration_id` is optional: `aws`, `gcp`, `azure`, `confluent`, `github` or `mongodbatlas`. The dashboard is copied into an install only once the customer connects an account of that integration, and is listed only while one is connected. Leave it out to copy and show the dashboard everywhere.
+- `integration_id` is optional: `aws`, `gcp`, `azure`, `confluent`, `github`, `mongodbatlas` or `synthetics`. The dashboard is copied into an install only once the customer connects an account of that integration, and is listed only while one is connected. `synthetics` has no accounts: it counts as connected while the install runs the Synthetics gateway (`synthetics.enabled` with a `synthetics.base_url`). Leave it out to copy and show the dashboard everywhere.
 - To remove a dashboard, set `"retired": true` and raise `version`. Deleting the file does nothing.
 
 ## Checks

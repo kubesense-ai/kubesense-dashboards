@@ -1,0 +1,2261 @@
+{
+  "meta": {
+    "key": "synthetics-api-test-performance",
+    "version": 2,
+    "integration_id": "synthetics",
+    "tags": [
+      "synthetics",
+      "api",
+      "performance"
+    ]
+  },
+  "name": "API Test Performance",
+  "description": "Response times, transaction phases and failures of synthetic API checks, with an overall summary and one section per protocol (HTTP, SSL, TCP, WebSocket, DNS, UDP, ICMP, gRPC, MCP, Network path). Only scheduled runs are recorded here: CI runs are not written to these stores. The check type picker narrows the overall section; each protocol section is fixed to its own type, and the monitor and location pickers narrow everything.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "4",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      }
+    ],
+    "panels": [
+      {
+        "name": "Runs",
+        "description": "Check runs in the selected time range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "synthetics",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "stat",
+            "filterMode": "MFD",
+            "filters": {
+              "labels.env": [
+                "$env"
+              ],
+              "labels.team": [
+                "$team"
+              ],
+              "labels.service": [
+                "$service"
+              ],
+              "monitor_name": [
+                "$monitor"
+              ],
+              "location": [
+                "$location"
+              ],
+              "check_type": [
+                "$check_type"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "sum"
+          }
+        }
+      },
+      {
+        "name": "Success rate",
+        "description": "Successful runs over all runs in the selected time range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum (increase(kubesense_synthetics_runs_total{status=\"success\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__time_filter])) / sum (increase(kubesense_synthetics_runs_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__time_filter])) * 100",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "percentage",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "last"
+          }
+        }
+      },
+      {
+        "name": "Failed runs",
+        "description": "Failed runs in the selected time range.",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "synthetics",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "stat",
+            "filterMode": "MFD",
+            "filters": {
+              "labels.env": [
+                "$env"
+              ],
+              "labels.team": [
+                "$team"
+              ],
+              "labels.service": [
+                "$service"
+              ],
+              "monitor_name": [
+                "$monitor"
+              ],
+              "location": [
+                "$location"
+              ],
+              "check_type": [
+                "$check_type"
+              ],
+              "status": [
+                "failure"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number",
+          "valueOptions": {
+            "show": "calculate",
+            "calculation": "sum"
+          }
+        }
+      },
+      {
+        "name": "Failure trend",
+        "description": "Failed runs by why they failed (failure code).",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "metrics",
+            "label": "A",
+            "selectedMetric": "",
+            "queryMode": "code",
+            "promql": "sum by (failure_code) (increase(kubesense_synthetics_runs_total{status=\"failure\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__rate_interval]))",
+            "visible": true,
+            "filters": {},
+            "functions": [],
+            "labelOptions": {
+              "type": "auto"
+            },
+            "pagination": {
+              "page": 1,
+              "page_size": 50
+            },
+            "fieldConfig": {}
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      },
+      {
+        "name": "Runs by check type",
+        "description": "Check runs per interval, by protocol.",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "synthetics",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "check_type",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "timeseries",
+            "filterMode": "MFD",
+            "filters": {
+              "labels.env": [
+                "$env"
+              ],
+              "labels.team": [
+                "$team"
+              ],
+              "labels.service": [
+                "$service"
+              ],
+              "monitor_name": [
+                "$monitor"
+              ],
+              "location": [
+                "$location"
+              ],
+              "check_type": [
+                "$check_type"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "number"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "name": "env",
+        "description": "Monitor label env.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "label_env",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "team",
+        "description": "Monitor label team.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "label_team",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "service",
+        "description": "Monitor label service.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "label_service",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "check_type",
+        "description": "Check type: HTTP, TCP, DNS, ... Applies to the overall section; each protocol section is fixed to its own type.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "check_type",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "monitor",
+        "description": "Monitor name.",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_monitor_status",
+          "fieldMeta": {
+            "field": "monitor_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      },
+      {
+        "name": "location",
+        "description": "Location id (the agent id for an agent with no location; local = synthetics-api itself).",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_location_status",
+          "fieldMeta": {
+            "field": "location",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
+      }
+    ],
+    "subGrids": [
+      {
+        "id": "http",
+        "title": "HTTP",
+        "collapsed": false,
+        "panels": [
+          {
+            "name": "Average response time (HTTP)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "HTTP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Transaction phase timings",
+            "description": "Mean dns, connect, tls, ttfb time per phase; a phase counts only when the check reports it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_sum{phase=~\"dns|connect|tls|ttfb\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"HTTP\"}[$__rate_interval])) / sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_count{phase=~\"dns|connect|tls|ttfb\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"HTTP\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "HTTP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "ssl",
+        "title": "SSL",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (SSL)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "SSL"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Transaction phase timings",
+            "description": "Mean connect, tls time per phase; a phase counts only when the check reports it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_sum{phase=~\"connect|tls\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"SSL\"}[$__rate_interval])) / sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_count{phase=~\"connect|tls\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"SSL\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "SSL"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "tcp",
+        "title": "TCP",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (TCP)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "TCP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Transaction phase timings",
+            "description": "Mean connect, tls time per phase; a phase counts only when the check reports it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_sum{phase=~\"connect|tls\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"TCP\"}[$__rate_interval])) / sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_count{phase=~\"connect|tls\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"TCP\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "TCP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "websocket",
+        "title": "WebSocket",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (WebSocket)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "WEBSOCKET"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Transaction phase timings",
+            "description": "Mean dns, connect, tls, ttfb time per phase; a phase counts only when the check reports it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_sum{phase=~\"dns|connect|tls|ttfb\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"WEBSOCKET\"}[$__rate_interval])) / sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_count{phase=~\"dns|connect|tls|ttfb\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"WEBSOCKET\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "WEBSOCKET"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "dns",
+        "title": "DNS",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (DNS)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "DNS"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Transaction phase timings",
+            "description": "Mean dns time per phase; a phase counts only when the check reports it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_sum{phase=\"dns\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"DNS\"}[$__rate_interval])) / sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_count{phase=\"dns\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"DNS\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "DNS"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "udp",
+        "title": "UDP",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (UDP)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "UDP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "UDP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 9,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "icmp",
+        "title": "ICMP",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (ICMP)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "PING"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "PING"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "Hops by location",
+            "description": "Hop count to the destination (network_hops) per location; 0 when not measured.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "network_hops",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "PING"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Packet loss by location",
+            "description": "Mean packet loss per location.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "packet_loss_pct",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "PING"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 9,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 4,
+            "w": 6,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "grpc",
+        "title": "gRPC",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (gRPC)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "GRPC"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Transaction phase timings",
+            "description": "Mean connect time per phase; a phase counts only when the check reports it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_sum{phase=\"connect\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"GRPC\"}[$__rate_interval])) / sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_count{phase=\"connect\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"GRPC\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "GRPC"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "mcp",
+        "title": "MCP",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (MCP)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "MCP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Transaction phase timings",
+            "description": "Mean dns, connect, tls, ttfb time per phase; a phase counts only when the check reports it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_sum{phase=~\"dns|connect|tls|ttfb\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"MCP\"}[$__rate_interval])) / sum by (phase) (rate(kubesense_synthetics_phase_duration_seconds_count{phase=~\"dns|connect|tls|ttfb\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"MCP\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "MCP"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 5,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      },
+      {
+        "id": "network-path",
+        "title": "Network path",
+        "collapsed": true,
+        "panels": [
+          {
+            "name": "Average response time (Network path)",
+            "description": "Mean total run time of the selected time range.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "NETWORK_PATH"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "mean"
+              }
+            }
+          },
+          {
+            "name": "Response time by location",
+            "description": "Mean total run time per location (local = synthetics-api itself).",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "total_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "NETWORK_PATH"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "Hops by location",
+            "description": "Hop count to the destination (network_hops) per location.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "network_hops",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "NETWORK_PATH"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Packet loss by location",
+            "description": "Mean packet loss per location.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "packet_loss_pct",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "NETWORK_PATH"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Jitter by location",
+            "description": "Mean jitter per location.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "location",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "avg",
+                  "fields": [
+                    {
+                      "field": "jitter_ms",
+                      "type": "float",
+                      "is_attribute": false
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "NETWORK_PATH"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 9,
+            "h": 4
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 4,
+            "w": 4,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 4,
+            "y": 4,
+            "w": 4,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 8,
+            "y": 4,
+            "w": 4,
+            "h": 4
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-http",
+        "x": 0,
+        "y": 6,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-ssl",
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-tcp",
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-websocket",
+        "x": 0,
+        "y": 14,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-dns",
+        "x": 0,
+        "y": 15,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-udp",
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-icmp",
+        "x": 0,
+        "y": 17,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-grpc",
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-mcp",
+        "x": 0,
+        "y": 19,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-network-path",
+        "x": 0,
+        "y": 20,
+        "w": 12,
+        "h": 1
+      }
+    ]
+  }
+}
