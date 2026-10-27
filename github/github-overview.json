@@ -1,0 +1,599 @@
+{
+  "meta": {
+    "key": "github-overview",
+    "version": 1,
+    "integration_id": "github",
+    "tags": [
+      "github",
+      "cicd"
+    ]
+  },
+  "name": "GitHub Overview",
+  "description": "CI runs, deployments, pull requests and activity from the GitHub integration's events.",
+  "preset": {
+    "gridLayout": [
+      {
+        "i": "0",
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "1",
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "2",
+        "x": 6,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "3",
+        "x": 9,
+        "y": 0,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "i": "4",
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "5",
+        "x": 6,
+        "y": 2,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "6",
+        "x": 0,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "7",
+        "x": 6,
+        "y": 6,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "8",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "9",
+        "x": 6,
+        "y": 10,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "10",
+        "x": 0,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "11",
+        "x": 6,
+        "y": 14,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "i": "12",
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 5
+      }
+    ],
+    "panels": [
+      {
+        "name": "Workflow runs",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "stat",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "workflow_run"
+              ],
+              "status": [
+                "success",
+                "failure",
+                "cancelled"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "valueOptions": {
+            "calculation": "sum",
+            "show": "calculate"
+          }
+        }
+      },
+      {
+        "name": "Failed workflow runs",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "stat",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "workflow_run"
+              ],
+              "status": [
+                "failure"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "valueOptions": {
+            "calculation": "sum",
+            "show": "calculate"
+          }
+        }
+      },
+      {
+        "name": "Successful deployments",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "stat",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "deployment_status"
+              ],
+              "status": [
+                "success"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "valueOptions": {
+            "calculation": "sum",
+            "show": "calculate"
+          }
+        }
+      },
+      {
+        "name": "Pull requests merged",
+        "description": "",
+        "panelType": "stat",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "stat",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "pull_request.merged"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "valueOptions": {
+            "calculation": "sum",
+            "show": "calculate"
+          }
+        }
+      },
+      {
+        "name": "Workflow runs by result",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "status",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "timeseries",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "workflow_run"
+              ],
+              "status": [
+                "success",
+                "failure",
+                "cancelled"
+              ]
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Workflow run duration p95 by workflow",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "cicd.pipeline.name",
+                "type": "string",
+                "is_attribute": true
+              }
+            ],
+            "aggregation": {
+              "function": "p95",
+              "fields": [
+                {
+                  "field": "duration_seconds",
+                  "type": "float",
+                  "is_attribute": true
+                }
+              ]
+            },
+            "chart_type": "timeseries",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "workflow_run"
+              ],
+              "status": [
+                "success",
+                "failure",
+                "cancelled"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "seconds"
+        }
+      },
+      {
+        "name": "Most failing workflows",
+        "description": "",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "cicd.pipeline.name",
+                "type": "string",
+                "is_attribute": true
+              }
+            ],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "topList",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "workflow_run"
+              ],
+              "status": [
+                "failure"
+              ]
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Slowest jobs (p95)",
+        "description": "",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "cicd.pipeline.task.name",
+                "type": "string",
+                "is_attribute": true
+              }
+            ],
+            "aggregation": {
+              "function": "p95",
+              "fields": [
+                {
+                  "field": "duration_seconds",
+                  "type": "float",
+                  "is_attribute": true
+                }
+              ]
+            },
+            "chart_type": "topList",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "workflow_job"
+              ],
+              "status": [
+                "success",
+                "failure"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "seconds"
+        }
+      },
+      {
+        "name": "Deployments by status",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "status",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "timeseries",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "deployment_status"
+              ]
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Pull requests opened and merged",
+        "description": "",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "type",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "timeseries",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "pull_request.opened",
+                "pull_request.merged"
+              ]
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Activity by repository",
+        "description": "",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "repository",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "topList",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ]
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Top pushers",
+        "description": "",
+        "panelType": "topList",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "actor",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "topList",
+            "filterMode": "MFD",
+            "filters": {
+              "source": [
+                "github"
+              ],
+              "type": [
+                "push"
+              ]
+            }
+          }
+        ],
+        "config": {}
+      },
+      {
+        "name": "Recent failures",
+        "description": "",
+        "panelType": "list",
+        "queries": [
+          {
+            "selectedMode": "events",
+            "label": "A",
+            "columnFields": [
+              {
+                "field": "title",
+                "type": "string",
+                "is_attribute": false
+              },
+              {
+                "field": "repository",
+                "type": "string",
+                "is_attribute": false
+              },
+              {
+                "field": "actor",
+                "type": "string",
+                "is_attribute": false
+              },
+              {
+                "field": "status",
+                "type": "string",
+                "is_attribute": false
+              },
+              {
+                "field": "url",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "groupBy": [],
+            "aggregation": {
+              "function": "row_count"
+            },
+            "chart_type": "list",
+            "filterMode": "ADVANCED_QUERY",
+            "filters": {
+              "advanced_query": [
+                "source = 'github' AND type IN ('workflow_run', 'deployment_status') AND status IN ('failure', 'error')"
+              ]
+            }
+          }
+        ],
+        "config": {}
+      }
+    ],
+    "variables": [],
+    "subGrids": [],
+    "subGridLayout": []
+  }
+}
