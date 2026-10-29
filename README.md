@@ -52,7 +52,7 @@ The `dev` API reads `dev`, the `test` API reads `test`, and production reads `ma
 
   - `match` is `any` (one condition is enough) or `all` (every condition must hold).
   - Each condition has exactly one key, which says what kind it is.
-  - `env` is `kubernetes`. `legacy` (virtual machine hosts) and `docker` are reserved and not supported yet.
+  - `env` is `kubernetes` or `legacy`. `legacy` means virtual machine hosts: it is met when VM host metrics were seen in the last 7 days. `docker` is reserved and not supported yet. Titles of dashboards for legacy hosts say "VM".
   - `integration` is one of `aws`, `gcp`, `azure`, `confluent`, `github`, `mongodbatlas` or `synthetics`. It is met while an account is connected for that integration. `synthetics` is met while the install runs the Synthetics gateway (`synthetics.enabled` with a `synthetics.base_url`).
   - `rum` is `browser` or `mobile`. It is met once an application of that type exists.
   - `metric` is a MetricsQL series selector, with labels if you need them. It is met when the selector had any sample in the last 7 days.

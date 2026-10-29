@@ -1,0 +1,724 @@
+{
+  "meta": {
+    "key": "vm-hosts-overview",
+    "version": 1,
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "env": "legacy"
+        }
+      ]
+    },
+    "tags": [
+      "vm",
+      "hosts"
+    ]
+  },
+  "name": "VM Hosts Overview",
+  "description": "CPU, memory, disk and processes across virtual machine hosts.",
+  "preset": {
+    "gridLayout": [],
+    "panels": [],
+    "variables": [
+      {
+        "name": "cluster",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "system_cpu_time_seconds_total",
+          "fieldMeta": {
+            "field": "kubesense_cluster",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "kubesense_env_type": [
+              "legacy"
+            ]
+          }
+        }
+      },
+      {
+        "name": "host",
+        "description": "",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "system_cpu_time_seconds_total",
+          "fieldMeta": {
+            "field": "host_name",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": [],
+          "filters": {
+            "kubesense_cluster": [
+              "$cluster"
+            ],
+            "kubesense_env_type": [
+              "legacy"
+            ]
+          }
+        }
+      }
+    ],
+    "subGrids": [],
+    "subGridLayout": [],
+    "tabs": [
+      {
+        "id": "overview",
+        "title": "Overview",
+        "panels": [
+          {
+            "name": "VM hosts",
+            "description": "",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "count(count by(host_name)(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Avg CPU",
+            "description": "",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "avg(100 * sum by(host_name)(rate(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state!=\"idle\"}[$__rate_interval])) / sum by(host_name)(rate(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}[$__rate_interval])))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Avg memory",
+            "description": "",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "avg(100 * sum by(host_name)(system_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state=\"used\"}) / sum by(host_name)(system_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Processes",
+            "description": "",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum(system_processes_count{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Hosts by CPU and memory",
+            "description": "",
+            "panelType": "hostMap",
+            "queries": [
+              {
+                "selectedMode": "infrastructure",
+                "label": "A",
+                "levels": [
+                  {
+                    "entity": "host",
+                    "fill": "cpu_utilization"
+                  },
+                  {
+                    "entity": "container",
+                    "fill": "memory_utilization"
+                  }
+                ],
+                "groupByDimensions": [
+                  "cluster"
+                ],
+                "filterMode": "MFD",
+                "filters": {
+                  "cluster": [
+                    "$cluster"
+                  ],
+                  "host": [
+                    "$host"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "hostMapColors": {
+                "host": {
+                  "palette": "solid-red-green",
+                  "scale": "linear",
+                  "min": 0,
+                  "max": 100,
+                  "reverse": true
+                },
+                "container": {
+                  "palette": "solid-red-green",
+                  "scale": "linear",
+                  "min": 0,
+                  "max": 100,
+                  "reverse": true
+                }
+              }
+            }
+          },
+          {
+            "name": "Top hosts by CPU",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, 100 * sum by(host_name)(rate(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state!=\"idle\"}[$__rate_interval])) / sum by(host_name)(rate(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}[$__rate_interval])))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Top hosts by memory",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, 100 * sum by(host_name)(system_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state=\"used\"}) / sum by(host_name)(system_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "2",
+            "x": 6,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "3",
+            "x": 9,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 2,
+            "w": 12,
+            "h": 7
+          },
+          {
+            "i": "5",
+            "x": 0,
+            "y": 9,
+            "w": 6,
+            "h": 5
+          },
+          {
+            "i": "6",
+            "x": 6,
+            "y": 9,
+            "w": 6,
+            "h": 5
+          }
+        ],
+        "subGrids": [],
+        "subGridLayout": []
+      },
+      {
+        "id": "cpu",
+        "title": "CPU",
+        "panels": [
+          {
+            "name": "CPU utilization by host",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "100 * sum by(host_name)(rate(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state!=\"idle\"}[$__rate_interval])) / sum by(host_name)(rate(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "CPU time by state",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by(state)(rate(system_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state!=\"idle\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "CPU",
+              "stackSeries": true,
+              "fillOpacity": 40
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 12,
+            "h": 5
+          },
+          {
+            "i": "1",
+            "x": 0,
+            "y": 5,
+            "w": 12,
+            "h": 5
+          }
+        ],
+        "subGrids": [],
+        "subGridLayout": []
+      },
+      {
+        "id": "memory",
+        "title": "Memory",
+        "panels": [
+          {
+            "name": "Memory used by host",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by(host_name)(system_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state=\"used\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          },
+          {
+            "name": "Memory utilization by host",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "100 * sum by(host_name)(system_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state=\"used\"}) / sum by(host_name)(system_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 12,
+            "h": 5
+          },
+          {
+            "i": "1",
+            "x": 0,
+            "y": 5,
+            "w": 12,
+            "h": 5
+          }
+        ],
+        "subGrids": [],
+        "subGridLayout": []
+      },
+      {
+        "id": "disk",
+        "title": "Disk",
+        "panels": [
+          {
+            "name": "Filesystem utilization by host and mountpoint",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "100 * sum by(host_name, mountpoint)(system_filesystem_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state=\"used\"}) / sum by(host_name, mountpoint)(system_filesystem_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Filesystem used by host and mountpoint",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by(host_name, mountpoint)(system_filesystem_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\", state=\"used\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 12,
+            "h": 5
+          },
+          {
+            "i": "1",
+            "x": 0,
+            "y": 5,
+            "w": 12,
+            "h": 5
+          }
+        ],
+        "subGrids": [],
+        "subGridLayout": []
+      },
+      {
+        "id": "processes",
+        "title": "Processes",
+        "panels": [
+          {
+            "name": "Processes by host",
+            "description": "",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by(host_name)(system_processes_count{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Top processes by CPU",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by(host_name, process_executable_name)(rate(process_cpu_time_seconds_total{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}[$__rate_interval])))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "CPU"
+            }
+          },
+          {
+            "name": "Top processes by memory",
+            "description": "",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by(host_name, process_executable_name)(process_memory_usage_bytes{kubesense_env_type=\"legacy\", kubesense_cluster=~\"$cluster\", host_name=~\"$host\"}))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "bytes"
+            }
+          }
+        ],
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 12,
+            "h": 5
+          },
+          {
+            "i": "1",
+            "x": 0,
+            "y": 5,
+            "w": 6,
+            "h": 6
+          },
+          {
+            "i": "2",
+            "x": 6,
+            "y": 5,
+            "w": 6,
+            "h": 6
+          }
+        ],
+        "subGrids": [],
+        "subGridLayout": []
+      }
+    ]
+  }
+}
