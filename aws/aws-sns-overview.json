@@ -2,7 +2,14 @@
   "meta": {
     "key": "aws-sns-overview",
     "version": 1,
-    "integration_id": "aws",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "aws"
+        }
+      ]
+    },
     "tags": [
       "aws",
       "sns",

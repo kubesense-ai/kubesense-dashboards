@@ -1,7 +1,15 @@
 {
   "meta": {
     "key": "kubernetes-cluster-overview",
-    "version": 1,
+    "version": 2,
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "env": "kubernetes"
+        }
+      ]
+    },
     "tags": [
       "kubernetes",
       "overview"

@@ -2,7 +2,14 @@
   "meta": {
     "key": "synthetics-overview",
     "version": 1,
-    "integration_id": "synthetics",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "synthetics"
+        }
+      ]
+    },
     "tags": [
       "synthetics",
       "uptime",

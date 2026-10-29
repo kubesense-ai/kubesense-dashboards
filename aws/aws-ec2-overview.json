@@ -2,7 +2,14 @@
   "meta": {
     "key": "aws-ec2-overview",
     "version": 2,
-    "integration_id": "aws",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "aws"
+        }
+      ]
+    },
     "tags": [
       "aws",
       "ec2"
