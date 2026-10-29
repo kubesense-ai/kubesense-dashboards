@@ -2,7 +2,14 @@
   "meta": {
     "key": "gcp-gke-overview",
     "version": 1,
-    "integration_id": "gcp",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "gcp"
+        }
+      ]
+    },
     "tags": [
       "gcp",
       "gke",

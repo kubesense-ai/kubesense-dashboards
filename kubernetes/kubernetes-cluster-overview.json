@@ -6,7 +6,7 @@
       "match": "any",
       "conditions": [
         {
-          "check": "kubernetes"
+          "env": "kubernetes"
         }
       ]
     },

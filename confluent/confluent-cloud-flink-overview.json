@@ -2,7 +2,14 @@
   "meta": {
     "key": "confluent-cloud-flink-overview",
     "version": 1,
-    "integration_id": "confluent",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "confluent"
+        }
+      ]
+    },
     "tags": [
       "confluent",
       "kafka",

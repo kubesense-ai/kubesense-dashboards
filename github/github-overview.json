@@ -2,7 +2,14 @@
   "meta": {
     "key": "github-overview",
     "version": 1,
-    "integration_id": "github",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "github"
+        }
+      ]
+    },
     "tags": [
       "github",
       "cicd"

@@ -2,7 +2,14 @@
   "meta": {
     "key": "aws-apigateway-overview",
     "version": 1,
-    "integration_id": "aws",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "aws"
+        }
+      ]
+    },
     "tags": [
       "aws",
       "apigateway"

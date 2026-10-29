@@ -2,7 +2,14 @@
   "meta": {
     "key": "gcp-cloudrun-overview",
     "version": 1,
-    "integration_id": "gcp",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "gcp"
+        }
+      ]
+    },
     "tags": [
       "gcp",
       "cloudrun",
