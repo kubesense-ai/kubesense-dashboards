@@ -1,7 +1,7 @@
 {
   "meta": {
     "key": "synthetics-browser-test-performance",
-    "version": 2,
+    "version": 3,
     "integration_id": "synthetics",
     "tags": [
       "synthetics",
@@ -10,7 +10,7 @@
     ]
   },
   "name": "Browser Test Performance",
-  "description": "Run duration, success rate, failures, Core Web Vitals and per-step timings of synthetic browser checks, with their firing alerts. Panels built from metrics count scheduled runs only; the run type picker (scheduled by default) narrows the rest.",
+  "description": "Run duration, success rate, failures, Core Web Vitals, third-party resources and per-step timings of synthetic browser checks, with their firing alerts. Panels built from metrics count scheduled runs only; the run type picker (scheduled by default) narrows the rest.",
   "preset": {
     "gridLayout": [
       {
@@ -1398,6 +1398,155 @@
         ]
       },
       {
+        "id": "third-party",
+        "title": "Third-party resources",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 5
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 5
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 5,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 5,
+            "w": 6,
+            "h": 4
+          }
+        ],
+        "panels": [
+          {
+            "name": "Slowest third-party hosts",
+            "description": "Mean request time per third-party host over the selected time range, slowest first. Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by (resource_host) (increase(kubesense_synthetics_browser_resource_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])) / sum by (resource_host) (increase(kubesense_synthetics_browser_resource_requests_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Most requested third-party hosts",
+            "description": "Requests per third-party host over the selected time range. Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by (resource_host) (increase(kubesense_synthetics_browser_resource_requests_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Third-party request time",
+            "description": "Mean request time per third-party host per interval. Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (resource_host) (rate(kubesense_synthetics_browser_resource_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__rate_interval])) / sum by (resource_host) (rate(kubesense_synthetics_browser_resource_requests_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Third-party failures by host",
+            "description": "Third-party responses with a status of 400 or more over the selected time range (browsers that report response statuses). Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by (resource_host) (increase(kubesense_synthetics_browser_resource_failures_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])) > 0)",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ]
+      },
+      {
         "id": "alerts",
         "title": "Alerts",
         "collapsed": false,
@@ -1460,9 +1609,16 @@
         "h": 1
       },
       {
-        "i": "sg-alerts",
+        "i": "sg-third-party",
         "x": 0,
         "y": 34,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-alerts",
+        "x": 0,
+        "y": 35,
         "w": 12,
         "h": 1
       }
