@@ -1,7 +1,7 @@
 {
   "meta": {
     "key": "synthetics-api-test-performance",
-    "version": 2,
+    "version": 3,
     "integration_id": "synthetics",
     "tags": [
       "synthetics",
@@ -10,7 +10,7 @@
     ]
   },
   "name": "API Test Performance",
-  "description": "Response times, transaction phases and failures of synthetic API checks, with an overall summary and one section per protocol (HTTP, SSL, TCP, WebSocket, DNS, UDP, ICMP, gRPC, MCP, Network path). Only scheduled runs are recorded here: CI runs are not written to these stores. The check type picker narrows the overall section; each protocol section is fixed to its own type, and the monitor and location pickers narrow everything.",
+  "description": "Response times, transaction phases and failures of synthetic API checks, with an overall summary, one section per protocol (HTTP, SSL, TCP, WebSocket, DNS, UDP, ICMP, gRPC, MCP, Network path) and their firing alerts. Panels built from metrics count scheduled runs only; the run type picker (scheduled by default) narrows the rest. The check type picker narrows the overall section; each protocol section is fixed to its own type, and the monitor and location pickers narrow everything.",
   "preset": {
     "gridLayout": [
       {
@@ -83,6 +83,9 @@
               ],
               "check_type": [
                 "$check_type"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -163,6 +166,9 @@
               ],
               "status": [
                 "failure"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -242,6 +248,9 @@
               ],
               "check_type": [
                 "$check_type"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -340,6 +349,21 @@
           },
           "selectType": "multiple",
           "value": []
+        }
+      },
+      {
+        "name": "run_type",
+        "description": "Run type: scheduled (the default) or ci. Applies to the panels that read runs; the metric panels count scheduled runs only.",
+        "meta": {
+          "variableType": "custom",
+          "options": [
+            "scheduled",
+            "ci"
+          ],
+          "value": [
+            "scheduled"
+          ],
+          "selectType": "multiple"
         }
       }
     ],
@@ -455,6 +479,9 @@
                   ],
                   "check_type": [
                     "HTTP"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -599,6 +626,9 @@
                   ],
                   "check_type": [
                     "SSL"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -743,6 +773,9 @@
                   ],
                   "check_type": [
                     "TCP"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -887,6 +920,9 @@
                   ],
                   "check_type": [
                     "WEBSOCKET"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1031,6 +1067,9 @@
                   ],
                   "check_type": [
                     "DNS"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1147,6 +1186,9 @@
                   ],
                   "check_type": [
                     "UDP"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1256,6 +1298,9 @@
                   ],
                   "check_type": [
                     "PING"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1310,6 +1355,9 @@
                   ],
                   "check_type": [
                     "PING"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1364,6 +1412,9 @@
                   ],
                   "check_type": [
                     "PING"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1515,6 +1566,9 @@
                   ],
                   "check_type": [
                     "GRPC"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1659,6 +1713,9 @@
                   ],
                   "check_type": [
                     "MCP"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1775,6 +1832,9 @@
                   ],
                   "check_type": [
                     "NETWORK_PATH"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1829,6 +1889,9 @@
                   ],
                   "check_type": [
                     "NETWORK_PATH"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1883,6 +1946,9 @@
                   ],
                   "check_type": [
                     "NETWORK_PATH"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1937,6 +2003,9 @@
                   ],
                   "check_type": [
                     "NETWORK_PATH"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
                   ]
                 }
               }
@@ -1981,6 +2050,59 @@
             "y": 4,
             "w": 4,
             "h": 4
+          }
+        ]
+      },
+      {
+        "id": "alerts",
+        "title": "Alerts",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 12,
+            "h": 6
+          }
+        ],
+        "panels": [
+          {
+            "name": "Monitor alerts",
+            "description": "Firing synthetics alerts, one row per firing instance, with the count of rules by state. Needs platform alerting (synthetics.api.alertingMode platform, the default): with synthetics alerting the monitors have no platform alert rules. The check type picker narrows them.",
+            "panelType": "alert",
+            "queries": [
+              {
+                "selectedMode": "alert",
+                "label": "A",
+                "visible": true,
+                "widgetType": "summary",
+                "ruleId": "",
+                "ruleName": "",
+                "vizType": "timeseries",
+                "filters": {
+                  "source": [
+                    "synthetics"
+                  ],
+                  "check_type": [
+                    "$check_type"
+                  ],
+                  "env": [
+                    "$env"
+                  ],
+                  "team": [
+                    "$team"
+                  ],
+                  "service": [
+                    "$service"
+                  ]
+                },
+                "displayFormat": "both",
+                "colorPreference": "text",
+                "summaryType": "group"
+              }
+            ],
+            "config": {}
           }
         ]
       }
@@ -2053,6 +2175,13 @@
         "i": "sg-network-path",
         "x": 0,
         "y": 20,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-alerts",
+        "x": 0,
+        "y": 21,
         "w": 12,
         "h": 1
       }

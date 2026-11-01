@@ -1,7 +1,7 @@
 {
   "meta": {
     "key": "synthetics-overview",
-    "version": 1,
+    "version": 2,
     "integration_id": "synthetics",
     "tags": [
       "synthetics",
@@ -10,7 +10,7 @@
     ]
   },
   "name": "Synthetics Overview",
-  "description": "Uptime, state, failures, run time and certificate expiry across every synthetic monitor.",
+  "description": "Uptime, state, failures, run time and certificate expiry across every synthetic monitor, with test usage by environment and team and the CI (continuous testing) runs.",
   "preset": {
     "gridLayout": [
       {
@@ -616,9 +616,326 @@
           "selectType": "multiple",
           "value": []
         }
+      },
+      {
+        "name": "run_type",
+        "description": "Run type: scheduled (the default) or ci. Applies to the panels that read runs; the metric panels count scheduled runs only.",
+        "meta": {
+          "variableType": "custom",
+          "options": [
+            "scheduled",
+            "ci"
+          ],
+          "value": [
+            "scheduled"
+          ],
+          "selectType": "multiple"
+        }
       }
     ],
-    "subGrids": [],
-    "subGridLayout": []
+    "subGrids": [
+      {
+        "id": "usage",
+        "title": "Usage",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 4,
+            "h": 5
+          },
+          {
+            "i": "1",
+            "x": 4,
+            "y": 0,
+            "w": 4,
+            "h": 5
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 5
+          }
+        ],
+        "panels": [
+          {
+            "name": "Runs by environment",
+            "description": "Runs per monitor label env (none = monitors without one).",
+            "panelType": "pie",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "labels.env",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "row_count"
+                },
+                "chart_type": "pie",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "check_type": [
+                    "$check_type"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Runs by team",
+            "description": "Runs per monitor label team (none = monitors without one).",
+            "panelType": "pie",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "labels.team",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "row_count"
+                },
+                "chart_type": "pie",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "check_type": [
+                    "$check_type"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Runs by environment and type",
+            "description": "Runs per monitor label env and check type.",
+            "panelType": "table",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "labels.env",
+                    "type": "string",
+                    "is_attribute": false
+                  },
+                  {
+                    "field": "check_type",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "row_count"
+                },
+                "chart_type": "table",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "check_type": [
+                    "$check_type"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ]
+      },
+      {
+        "id": "continuous-testing",
+        "title": "Continuous Testing",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          }
+        ],
+        "panels": [
+          {
+            "name": "CI runs by result",
+            "description": "Runs of CI batches (synthetics-cli, POST /batches) per interval, by result.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "status",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "row_count"
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "check_type": [
+                    "$check_type"
+                  ],
+                  "@_@run_type": [
+                    ":ci"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "CI runs by team",
+            "description": "Runs of CI batches per monitor label team, most first.",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "labels.team",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "row_count"
+                },
+                "chart_type": "topList",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "check_type": [
+                    "$check_type"
+                  ],
+                  "@_@run_type": [
+                    ":ci"
+                  ]
+                },
+                "sorting": {
+                  "sortBy": {
+                    "field": "",
+                    "type": "string",
+                    "is_attribute": false
+                  },
+                  "sortOrder": "DESC"
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-usage",
+        "x": 0,
+        "y": 21,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-continuous-testing",
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 1
+      }
+    ]
   }
 }
