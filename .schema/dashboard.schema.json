@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KubeSense system dashboard",
+  "description": "One dashboard file in this repository: the envelope (name, description, meta) around a dashboard preset. This schema checks the envelope and meta only. kubeapi's validator checks the preset.",
+  "type": "object",
+  "required": ["name", "meta", "preset"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Relative path to this schema, so editors offer autocomplete. The loader ignores it."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Dashboard title shown in KubeSense. Renaming it is fine."
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "Short text shown under the title."
+    },
+    "preset": {
+      "type": ["object", "string"],
+      "description": "The dashboard preset, as an object (preferred) or as the JSON string that Export writes. Not checked here; kubeapi's validator checks it."
+    },
+    "meta": {
+      "title": "Dashboard meta",
+      "description": "Identity, version and install requirements of the dashboard.",
+      "type": "object",
+      "required": ["key", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Permanent identity of the dashboard. Never change it. Renaming the dashboard or moving the file is fine."
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647,
+          "description": "Starts at 1. Raise it whenever the dashboard changes, otherwise the API keeps the old copy."
+        },
+        "requires": {
+          "description": "When the dashboard is copied into an install and shown. Omit it to show the dashboard everywhere.",
+          "oneOf": [{ "$ref": "#/$defs/requires" }, { "type": "null" }]
+        },
+        "retired": {
+          "type": ["boolean", "null"],
+          "description": "Set to true, and raise version, to remove the dashboard. Deleting the file does nothing."
+        },
+        "tags": {
+          "type": ["array", "null"],
+          "items": { "type": "string" },
+          "description": "Free-form labels."
+        }
+      },
+      "not": { "required": ["integration_id"] }
+    }
+  },
+  "$defs": {
+    "requires": {
+      "type": "object",
+      "required": ["match", "conditions"],
+      "additionalProperties": false,
+      "properties": {
+        "match": {
+          "enum": ["any", "all"],
+          "description": "any: one condition is enough. all: every condition must hold."
+        },
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/condition" },
+          "description": "What to check on the install. Each condition has exactly one key."
+        }
+      }
+    },
+    "condition": {
+      "description": "One check with exactly one key: env, integration, rum or metric.",
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["env"],
+          "additionalProperties": false,
+          "properties": {
+            "env": {
+              "enum": ["kubernetes", "legacy"],
+              "description": "kubernetes, or legacy for virtual machine hosts (met when VM host metrics were seen in the last 7 days). docker is reserved and not supported yet."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["integration"],
+          "additionalProperties": false,
+          "properties": {
+            "integration": {
+              "enum": ["aws", "gcp", "azure", "confluent", "github", "mongodbatlas", "synthetics"],
+              "description": "Met while an account is connected for that integration. synthetics is met while the install runs the Synthetics gateway."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["rum"],
+          "additionalProperties": false,
+          "properties": {
+            "rum": {
+              "enum": ["browser", "mobile"],
+              "description": "Met once an application of that type exists."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["metric"],
+          "additionalProperties": false,
+          "properties": {
+            "metric": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S",
+              "description": "A MetricsQL series selector, with labels if needed. Met when it had any sample in the last 7 days. This schema cannot parse MetricsQL; kubeapi's validator does."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

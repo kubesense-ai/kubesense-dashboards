@@ -1,8 +1,16 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "synthetics-browser-test-performance",
     "version": 3,
-    "integration_id": "synthetics",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "synthetics"
+        }
+      ]
+    },
     "tags": [
       "synthetics",
       "browser",
