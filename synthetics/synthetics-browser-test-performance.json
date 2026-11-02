@@ -1,7 +1,7 @@
 {
   "meta": {
     "key": "synthetics-browser-test-performance",
-    "version": 1,
+    "version": 3,
     "requires": {
       "match": "any",
       "conditions": [
@@ -17,7 +17,7 @@
     ]
   },
   "name": "Browser Test Performance",
-  "description": "Run duration, success rate, failures and per-step timings of synthetic browser checks. Only scheduled runs are recorded here: CI runs are not written to these stores.",
+  "description": "Run duration, success rate, failures, Core Web Vitals, third-party resources and per-step timings of synthetic browser checks, with their firing alerts. Panels built from metrics count scheduled runs only; the run type picker (scheduled by default) narrows the rest.",
   "preset": {
     "gridLayout": [
       {
@@ -85,52 +85,59 @@
       },
       {
         "i": "9",
-        "x": 0,
+        "x": 6,
         "y": 10,
         "w": 6,
         "h": 4
       },
       {
         "i": "10",
-        "x": 6,
-        "y": 10,
+        "x": 0,
+        "y": 14,
         "w": 6,
         "h": 4
       },
       {
         "i": "11",
-        "x": 0,
+        "x": 6,
         "y": 14,
         "w": 6,
         "h": 4
       },
       {
         "i": "12",
-        "x": 6,
-        "y": 14,
+        "x": 0,
+        "y": 18,
         "w": 6,
-        "h": 4
+        "h": 5
       },
       {
         "i": "13",
-        "x": 0,
+        "x": 6,
         "y": 18,
         "w": 6,
         "h": 5
       },
       {
         "i": "14",
-        "x": 6,
-        "y": 18,
-        "w": 6,
-        "h": 5
+        "x": 0,
+        "y": 23,
+        "w": 12,
+        "h": 4
       },
       {
         "i": "15",
         "x": 0,
-        "y": 23,
+        "y": 27,
         "w": 12,
         "h": 6
+      },
+      {
+        "i": "16",
+        "x": 0,
+        "y": 10,
+        "w": 6,
+        "h": 4
       }
     ],
     "panels": [
@@ -167,6 +174,9 @@
               ],
               "check_type": [
                 "BROWSER"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -247,6 +257,9 @@
               ],
               "status": [
                 "failure"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -440,6 +453,9 @@
               ],
               "check_type": [
                 "BROWSER"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -494,6 +510,9 @@
               ],
               "check_type": [
                 "BROWSER"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -544,6 +563,9 @@
               ],
               "status": [
                 "failure"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             },
             "sorting": {
@@ -634,6 +656,9 @@
               ],
               "check_type": [
                 "BROWSER"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             },
             "sorting": {
@@ -660,7 +685,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "topk(10, sum by (monitor_name, step) (rate(kubesense_synthetics_step_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])) / sum by (monitor_name, step) (rate(kubesense_synthetics_step_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])))",
+            "promql": "topk(10, sum by (monitor_name, step) (rate(kubesense_synthetics_step_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\", step=~\"$step\"}[$__time_filter])) / sum by (monitor_name, step) (rate(kubesense_synthetics_step_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\", step=~\"$step\"}[$__time_filter])))",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -688,7 +713,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum by (step) (rate(kubesense_synthetics_step_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__rate_interval])) / sum by (step) (rate(kubesense_synthetics_step_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__rate_interval]))",
+            "promql": "sum by (step) (rate(kubesense_synthetics_step_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\", step=~\"$step\"}[$__rate_interval])) / sum by (step) (rate(kubesense_synthetics_step_duration_seconds_count{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\", step=~\"$step\"}[$__rate_interval]))",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -768,6 +793,66 @@
               ],
               "status": [
                 "failure"
+              ],
+              "@_@run_type": [
+                ":$run_type"
+              ]
+            }
+          }
+        ],
+        "config": {
+          "yAxisLabelFormatter": "milliseconds"
+        }
+      },
+      {
+        "name": "Average run duration by location",
+        "description": "Mean total run time per location (local = synthetics-api itself).",
+        "panelType": "timeSeries",
+        "queries": [
+          {
+            "selectedMode": "synthetics",
+            "label": "A",
+            "columnFields": [],
+            "groupBy": [
+              {
+                "field": "location",
+                "type": "string",
+                "is_attribute": false
+              }
+            ],
+            "aggregation": {
+              "function": "avg",
+              "fields": [
+                {
+                  "field": "total_ms",
+                  "type": "float",
+                  "is_attribute": false
+                }
+              ]
+            },
+            "chart_type": "timeseries",
+            "filterMode": "MFD",
+            "filters": {
+              "labels.env": [
+                "$env"
+              ],
+              "labels.team": [
+                "$team"
+              ],
+              "labels.service": [
+                "$service"
+              ],
+              "monitor_name": [
+                "$monitor"
+              ],
+              "location": [
+                "$location"
+              ],
+              "check_type": [
+                "BROWSER"
+              ],
+              "@_@run_type": [
+                ":$run_type"
               ]
             }
           }
@@ -852,9 +937,698 @@
           "selectType": "multiple",
           "value": []
         }
+      },
+      {
+        "name": "run_type",
+        "description": "Run type: scheduled (the default) or ci. Applies to the panels that read runs; the metric panels count scheduled runs only.",
+        "meta": {
+          "variableType": "custom",
+          "options": [
+            "scheduled",
+            "ci"
+          ],
+          "value": [
+            "scheduled"
+          ],
+          "selectType": "multiple"
+        }
+      },
+      {
+        "name": "step",
+        "description": "Browser or multistep step name (cut at 64 characters).",
+        "meta": {
+          "variableType": "metrics",
+          "metric": "kubesense_synthetics_step_duration_seconds_count",
+          "fieldMeta": {
+            "field": "step",
+            "type": "string",
+            "is_attribute": false
+          },
+          "selectType": "multiple",
+          "value": []
+        }
       }
     ],
-    "subGrids": [],
-    "subGridLayout": []
+    "subGrids": [
+      {
+        "id": "web-vitals",
+        "title": "Core Web Vitals",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 4,
+            "h": 2
+          },
+          {
+            "i": "1",
+            "x": 4,
+            "y": 0,
+            "w": 4,
+            "h": 2
+          },
+          {
+            "i": "2",
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 2
+          },
+          {
+            "i": "3",
+            "x": 0,
+            "y": 2,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 6,
+            "y": 2,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 0,
+            "y": 6,
+            "w": 12,
+            "h": 4
+          }
+        ],
+        "panels": [
+          {
+            "name": "LCP p75",
+            "description": "75th percentile Largest Contentful Paint (good ≤ 2.5 s, poor > 4 s). Each run counts its worst page (the largest value any step measured); runs that measured none are left out.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "p75",
+                  "fields": [
+                    {
+                      "field": "vitals.lcp_ms",
+                      "type": "float",
+                      "is_attribute": true
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "BROWSER"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              },
+              "thresholds": [
+                {
+                  "threshold": "-Infinity",
+                  "color": "#56a64b",
+                  "isDefault": true
+                },
+                {
+                  "threshold": 2500,
+                  "color": "#ef843c",
+                  "isDefault": false
+                },
+                {
+                  "threshold": 4000,
+                  "color": "#e24d42",
+                  "isDefault": false
+                }
+              ]
+            }
+          },
+          {
+            "name": "CLS p75",
+            "description": "75th percentile Cumulative Layout Shift (good ≤ 0.1, poor > 0.25). Each run counts its worst page (the largest value any step measured); runs that measured none are left out.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "p75",
+                  "fields": [
+                    {
+                      "field": "vitals.cls",
+                      "type": "float",
+                      "is_attribute": true
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "BROWSER"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              },
+              "thresholds": [
+                {
+                  "threshold": "-Infinity",
+                  "color": "#56a64b",
+                  "isDefault": true
+                },
+                {
+                  "threshold": 0.1,
+                  "color": "#ef843c",
+                  "isDefault": false
+                },
+                {
+                  "threshold": 0.25,
+                  "color": "#e24d42",
+                  "isDefault": false
+                }
+              ]
+            }
+          },
+          {
+            "name": "FCP p75",
+            "description": "75th percentile First Contentful Paint (good ≤ 1.8 s, poor > 3 s). Each run counts its worst page (the largest value any step measured); runs that measured none are left out.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "p75",
+                  "fields": [
+                    {
+                      "field": "vitals.fcp_ms",
+                      "type": "float",
+                      "is_attribute": true
+                    }
+                  ]
+                },
+                "chart_type": "stat",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "BROWSER"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              },
+              "thresholds": [
+                {
+                  "threshold": "-Infinity",
+                  "color": "#56a64b",
+                  "isDefault": true
+                },
+                {
+                  "threshold": 1800,
+                  "color": "#ef843c",
+                  "isDefault": false
+                },
+                {
+                  "threshold": 3000,
+                  "color": "#e24d42",
+                  "isDefault": false
+                }
+              ]
+            }
+          },
+          {
+            "name": "LCP p75 over time",
+            "description": "75th percentile Largest Contentful Paint per interval. Each run counts its worst page (the largest value any step measured); runs that measured none are left out.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "p75",
+                  "fields": [
+                    {
+                      "field": "vitals.lcp_ms",
+                      "type": "float",
+                      "is_attribute": true
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "BROWSER"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          },
+          {
+            "name": "CLS p75 over time",
+            "description": "75th percentile Cumulative Layout Shift per interval. Each run counts its worst page (the largest value any step measured); runs that measured none are left out.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [],
+                "aggregation": {
+                  "function": "p75",
+                  "fields": [
+                    {
+                      "field": "vitals.cls",
+                      "type": "float",
+                      "is_attribute": true
+                    }
+                  ]
+                },
+                "chart_type": "timeseries",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "BROWSER"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Slowest LCP by monitor (p75)",
+            "description": "Browser monitors by 75th percentile Largest Contentful Paint, slowest first. Each run counts its worst page (the largest value any step measured); runs that measured none are left out.",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "synthetics",
+                "label": "A",
+                "columnFields": [],
+                "groupBy": [
+                  {
+                    "field": "monitor_name",
+                    "type": "string",
+                    "is_attribute": false
+                  }
+                ],
+                "aggregation": {
+                  "function": "p75",
+                  "fields": [
+                    {
+                      "field": "vitals.lcp_ms",
+                      "type": "float",
+                      "is_attribute": true
+                    }
+                  ]
+                },
+                "chart_type": "topList",
+                "filterMode": "MFD",
+                "filters": {
+                  "labels.env": [
+                    "$env"
+                  ],
+                  "labels.team": [
+                    "$team"
+                  ],
+                  "labels.service": [
+                    "$service"
+                  ],
+                  "monitor_name": [
+                    "$monitor"
+                  ],
+                  "location": [
+                    "$location"
+                  ],
+                  "check_type": [
+                    "BROWSER"
+                  ],
+                  "@_@run_type": [
+                    ":$run_type"
+                  ]
+                },
+                "sorting": {
+                  "sortBy": {
+                    "field": "",
+                    "type": "string",
+                    "is_attribute": false
+                  },
+                  "sortOrder": "DESC"
+                }
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "milliseconds"
+            }
+          }
+        ]
+      },
+      {
+        "id": "third-party",
+        "title": "Third-party resources",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 5
+          },
+          {
+            "i": "1",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 5
+          },
+          {
+            "i": "2",
+            "x": 0,
+            "y": 5,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "3",
+            "x": 6,
+            "y": 5,
+            "w": 6,
+            "h": 4
+          }
+        ],
+        "panels": [
+          {
+            "name": "Slowest third-party hosts",
+            "description": "Mean request time per third-party host over the selected time range, slowest first. Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by (resource_host) (increase(kubesense_synthetics_browser_resource_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])) / sum by (resource_host) (increase(kubesense_synthetics_browser_resource_requests_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Most requested third-party hosts",
+            "description": "Requests per third-party host over the selected time range. Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by (resource_host) (increase(kubesense_synthetics_browser_resource_requests_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Third-party request time",
+            "description": "Mean request time per third-party host per interval. Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (resource_host) (rate(kubesense_synthetics_browser_resource_duration_seconds_sum{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__rate_interval])) / sum by (resource_host) (rate(kubesense_synthetics_browser_resource_requests_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__rate_interval]))",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "seconds"
+            }
+          },
+          {
+            "name": "Third-party failures by host",
+            "description": "Third-party responses with a status of 400 or more over the selected time range (browsers that report response statuses). Third-party = another site than the page (its registrable domain differs); at most 10 hosts per monitor and location, later ones under \"other\".",
+            "panelType": "topList",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "topk(10, sum by (resource_host) (increase(kubesense_synthetics_browser_resource_failures_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=\"BROWSER\"}[$__time_filter])) > 0)",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ]
+      },
+      {
+        "id": "alerts",
+        "title": "Alerts",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 12,
+            "h": 6
+          }
+        ],
+        "panels": [
+          {
+            "name": "Browser monitor alerts",
+            "description": "Firing synthetics alerts, one row per firing instance, with the count of rules by state. Needs platform alerting (synthetics.api.alertingMode platform, the default): with synthetics alerting the monitors have no platform alert rules.",
+            "panelType": "alert",
+            "queries": [
+              {
+                "selectedMode": "alert",
+                "label": "A",
+                "visible": true,
+                "widgetType": "summary",
+                "ruleId": "",
+                "ruleName": "",
+                "vizType": "timeseries",
+                "filters": {
+                  "source": [
+                    "synthetics"
+                  ],
+                  "check_type": [
+                    "BROWSER"
+                  ],
+                  "env": [
+                    "$env"
+                  ],
+                  "team": [
+                    "$team"
+                  ],
+                  "service": [
+                    "$service"
+                  ]
+                },
+                "displayFormat": "both",
+                "colorPreference": "text",
+                "summaryType": "group"
+              }
+            ],
+            "config": {}
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-web-vitals",
+        "x": 0,
+        "y": 33,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-third-party",
+        "x": 0,
+        "y": 34,
+        "w": 12,
+        "h": 1
+      },
+      {
+        "i": "sg-alerts",
+        "x": 0,
+        "y": 35,
+        "w": 12,
+        "h": 1
+      }
+    ]
   }
 }

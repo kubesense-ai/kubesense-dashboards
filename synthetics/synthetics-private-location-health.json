@@ -1,7 +1,7 @@
 {
   "meta": {
     "key": "synthetics-private-location-health",
-    "version": 1,
+    "version": 2,
     "requires": {
       "match": "any",
       "conditions": [
@@ -17,7 +17,7 @@
     ]
   },
   "name": "Private Location Health",
-  "description": "Probe agents and check health per location, and the synthetics-api delivery of platform series and results. Agent, remote-write and results-writer panels read synthetics-api's own metrics, which reach the platform TSDB only when its ServiceMonitor scraping is enabled.",
+  "description": "Probe agents and check health per location, the agents' load (running checks against their slots, checks assigned, results waiting, versions), and the synthetics-api delivery of platform series and results. Agent, remote-write and results-writer panels read synthetics-api's own metrics, which reach the platform TSDB only when its ServiceMonitor scraping is enabled.",
   "preset": {
     "gridLayout": [
       {
@@ -929,7 +929,426 @@
         }
       }
     ],
-    "subGrids": [],
-    "subGridLayout": []
+    "subGrids": [
+      {
+        "id": "agent-capacity",
+        "title": "Agent capacity",
+        "collapsed": false,
+        "gridLayout": [
+          {
+            "i": "0",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "1",
+            "x": 3,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "2",
+            "x": 6,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "3",
+            "x": 9,
+            "y": 0,
+            "w": 3,
+            "h": 2
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 2,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "5",
+            "x": 6,
+            "y": 2,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "6",
+            "x": 0,
+            "y": 6,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "7",
+            "x": 6,
+            "y": 6,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "8",
+            "x": 0,
+            "y": 10,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "9",
+            "x": 6,
+            "y": 10,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "10",
+            "x": 0,
+            "y": 14,
+            "w": 12,
+            "h": 5
+          }
+        ],
+        "panels": [
+          {
+            "name": "Worker utilisation",
+            "description": "Scheduled checks running over the agents' worker slots. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum(kubesense_synthetics_agent_running{location_id=~\"$location\"}) / sum(kubesense_synthetics_agent_workers{location_id=~\"$location\"}) * 100",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Browser slot utilisation",
+            "description": "Browser runs over the browser agents' browser slots. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum(kubesense_synthetics_agent_browser_running{location_id=~\"$location\"}) / sum(kubesense_synthetics_agent_browser_slots{location_id=~\"$location\"}) * 100",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Checks assigned",
+            "description": "Monitors assigned to the agents at their last check sync, summed over agents (every agent of a location runs all of the location's monitors). From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum(kubesense_synthetics_agent_checks_assigned{location_id=~\"$location\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Results waiting",
+            "description": "Results the agents hold before pushing them (buffer and spool); growing while synthetics-api is unreachable. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "stat",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum(kubesense_synthetics_agent_queue_length{location_id=~\"$location\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number",
+              "valueOptions": {
+                "show": "calculate",
+                "calculation": "last"
+              }
+            }
+          },
+          {
+            "name": "Running checks by location",
+            "description": "Scheduled checks executing at each heartbeat. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (location_name) (kubesense_synthetics_agent_running{location_id=~\"$location\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Worker utilisation by location",
+            "description": "Running checks over worker slots; near 100 the location needs more workers or agents with more slots. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (location_name) (kubesense_synthetics_agent_running{location_id=~\"$location\"}) / sum by (location_name) (kubesense_synthetics_agent_workers{location_id=~\"$location\"}) * 100",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "percentage"
+            }
+          },
+          {
+            "name": "Browser runs by location",
+            "description": "Browser runs holding a browser slot. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (location_name) (kubesense_synthetics_agent_browser_running{location_id=~\"$location\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Checks assigned by location",
+            "description": "Monitors pulled by the agents at their last check sync. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (location_name) (kubesense_synthetics_agent_checks_assigned{location_id=~\"$location\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Runs started by location",
+            "description": "Scheduled runs started per minute (counted by the agents). From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (location_name) (rate(kubesense_synthetics_agent_runs_total{location_id=~\"$location\"}[$__rate_interval])) * 60",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Results waiting by location",
+            "description": "Results the agents hold before pushing them (buffer and spool). From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "sum by (location_name) (kubesense_synthetics_agent_queue_length{location_id=~\"$location\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          },
+          {
+            "name": "Agent versions",
+            "description": "Online agents with their version. From each online agent's last heartbeat (agents that report their load: this release and later), remote-written by synthetics-api.",
+            "panelType": "table",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "",
+                "queryMode": "code",
+                "promql": "max by (location_name, agent_name, version) (kubesense_synthetics_agent_info{location_id=~\"$location\"})",
+                "visible": true,
+                "filters": {},
+                "functions": [],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
+          }
+        ]
+      }
+    ],
+    "subGridLayout": [
+      {
+        "i": "sg-agent-capacity",
+        "x": 0,
+        "y": 30,
+        "w": 12,
+        "h": 1
+      }
+    ]
   }
 }
