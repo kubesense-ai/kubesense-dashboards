@@ -1,4 +1,5 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "kubernetes-kubelet-overview",
     "version": 2,

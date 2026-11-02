@@ -1,4 +1,5 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "mongodb-atlas-nodes",
     "version": 1,

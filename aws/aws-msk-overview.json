@@ -1,4 +1,5 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "aws-msk-overview",
     "version": 1,

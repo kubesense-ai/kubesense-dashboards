@@ -1,4 +1,5 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "gcp-cloudtasks-overview",
     "version": 1,

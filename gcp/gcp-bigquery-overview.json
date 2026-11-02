@@ -1,4 +1,5 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "gcp-bigquery-overview",
     "version": 1,

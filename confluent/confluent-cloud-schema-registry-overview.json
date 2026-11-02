@@ -1,4 +1,5 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "confluent-cloud-schema-registry-overview",
     "version": 1,

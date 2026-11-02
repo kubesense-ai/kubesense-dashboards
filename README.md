@@ -65,3 +65,11 @@ The `dev` API reads `dev`, the `test` API reads `test`, and production reads `ma
 ## Checks
 
 Every pull request and every push is checked by kubeapi's own validator. It is built from the kubeapi branch with the same name as the dashboards branch being changed, so a dashboard can be tested against an unmerged kubeapi change. When kubeapi has no such branch, it uses the branch being merged into (`dev` for a plain push). It refuses invalid dashboards, duplicate keys, changes without a version bump and deleted keys.
+
+### Schema
+
+Every dashboard file starts with a `$schema` key pointing at `.schema/dashboard.schema.json`, as a relative path (`"../.schema/dashboard.schema.json"` for a file one folder down). Editors use it for autocomplete and inline errors. The loader ignores the key, so adding it needs no version bump.
+
+CI runs `.schema/check.sh`, which fails a file with a missing or wrong `$schema`, a file that breaks the schema, and a schema that no longer accepts or rejects its fixtures in `.schema/tests`. Run it locally the same way (needs `check-jsonschema` or `uvx`).
+
+The schema checks the envelope and `meta` only. kubeapi's validator still checks the preset, the `metric` selectors, duplicate keys and version bumps. When kubeapi's rules change (a new integration, a new condition kind), update `.schema/dashboard.schema.json` and its fixtures in the same change. Keep the schema and fixtures in a dot-folder: the loader treats every other `.json` file as a dashboard.
