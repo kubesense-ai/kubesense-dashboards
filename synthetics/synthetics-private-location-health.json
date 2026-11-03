@@ -283,7 +283,7 @@
       },
       {
         "name": "Remote-write queue",
-        "description": "Remote-write requests waiting to be sent to the platform TSDB. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Remote-write requests waiting to be sent to the platform TSDB.",
         "panelType": "stat",
         "queries": [
           {
@@ -291,7 +291,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "max(synthetics_remote_write_queue_length)",
+            "promql": "max(kubesense_synthetics_api_remote_write_queue_length)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -315,7 +315,7 @@
       },
       {
         "name": "Since last remote write",
-        "description": "Time since the leader last delivered platform series. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Time since the leader last delivered platform series.",
         "panelType": "stat",
         "queries": [
           {
@@ -323,7 +323,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "time() - max(synthetics_remote_write_last_success_timestamp_seconds > 0)",
+            "promql": "time() - max(kubesense_synthetics_api_remote_write_last_success_timestamp_seconds > 0)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -347,7 +347,7 @@
       },
       {
         "name": "Leader replicas",
-        "description": "Replicas holding the leader lease; exactly 1 is healthy. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Replicas holding the leader lease; exactly 1 is healthy.",
         "panelType": "stat",
         "queries": [
           {
@@ -355,7 +355,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum(synthetics_leader)",
+            "promql": "sum(kubesense_synthetics_api_leader)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -557,7 +557,7 @@
       },
       {
         "name": "Remote-write samples",
-        "description": "Platform series samples sent to and dropped before the platform TSDB, per second. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Platform series samples sent to and dropped before the platform TSDB, per second.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -565,7 +565,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum(rate(synthetics_remote_write_samples_sent_total[$__rate_interval]))",
+            "promql": "sum(rate(kubesense_synthetics_api_remote_write_samples_sent_total[$__rate_interval]))",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -584,7 +584,7 @@
             "label": "B",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum by (reason) (rate(synthetics_remote_write_samples_dropped_total[$__rate_interval])) > 0",
+            "promql": "sum by (reason) (rate(kubesense_synthetics_api_remote_write_samples_dropped_total[$__rate_interval])) > 0",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -610,7 +610,7 @@
       },
       {
         "name": "Remote-write send failures",
-        "description": "Failed remote-write HTTP attempts per second; each retry counts. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Failed remote-write HTTP attempts per second; each retry counts.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -618,7 +618,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum(rate(synthetics_remote_write_send_failures_total[$__rate_interval]))",
+            "promql": "sum(rate(kubesense_synthetics_api_remote_write_send_failures_total[$__rate_interval]))",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -643,7 +643,7 @@
       },
       {
         "name": "Remote-write queue length",
-        "description": "Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Remote-write requests waiting to be sent to the platform TSDB, per replica (the leader's carry the queue).",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -651,7 +651,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "max(synthetics_remote_write_queue_length)",
+            "promql": "max(kubesense_synthetics_api_remote_write_queue_length)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -671,7 +671,7 @@
       },
       {
         "name": "Time since last remote write",
-        "description": "Stays near the remote-write interval while delivery works. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Stays near the remote-write interval while delivery works.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -679,7 +679,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "time() - max(synthetics_remote_write_last_success_timestamp_seconds > 0)",
+            "promql": "time() - max(kubesense_synthetics_api_remote_write_last_success_timestamp_seconds > 0)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -699,7 +699,7 @@
       },
       {
         "name": "Platform series",
-        "description": "Series the leader writes, and new series refused by the series cap. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Series the leader writes, and new series refused by the series cap.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -707,7 +707,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "max(synthetics_remote_write_active_series)",
+            "promql": "max(kubesense_synthetics_api_remote_write_active_series)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -726,7 +726,7 @@
             "label": "B",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum(rate(synthetics_remote_write_series_dropped_total[$__rate_interval])) > 0",
+            "promql": "sum(rate(kubesense_synthetics_api_remote_write_series_dropped_total[$__rate_interval])) > 0",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -752,7 +752,7 @@
       },
       {
         "name": "Results pipeline",
-        "description": "Check results ingested (stored in ClickHouse and evaluated) per second, with those dropped under backpressure and those that failed to persist. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Check results ingested (stored in ClickHouse and evaluated) per second, with those dropped under backpressure and those that failed to persist.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -760,7 +760,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum(rate(synthetics_results_processed_total[$__rate_interval]))",
+            "promql": "sum(rate(kubesense_synthetics_api_results_processed_total[$__rate_interval]))",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -779,7 +779,7 @@
             "label": "B",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum(rate(synthetics_results_dropped_total[$__rate_interval])) > 0",
+            "promql": "sum(rate(kubesense_synthetics_api_results_dropped_total[$__rate_interval])) > 0",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -803,7 +803,7 @@
             "label": "C",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum(rate(synthetics_results_sink_errors_total[$__rate_interval])) > 0",
+            "promql": "sum(rate(kubesense_synthetics_api_results_sink_errors_total[$__rate_interval])) > 0",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -829,7 +829,7 @@
       },
       {
         "name": "Results ingestion lag",
-        "description": "Age of the most recently ingested result: from the run's end to stored and evaluated. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Age of the most recently ingested result: from the run's end to stored and evaluated.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -837,7 +837,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "max(synthetics_results_ingestion_lag_seconds)",
+            "promql": "max(kubesense_synthetics_api_results_ingestion_lag_seconds)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -858,7 +858,7 @@
       },
       {
         "name": "Results queue",
-        "description": "Results waiting in the ingestion buffer; beyond its capacity the oldest are dropped. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "Results waiting in the ingestion buffer; beyond its capacity the oldest are dropped.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -866,7 +866,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "max(synthetics_results_queue_length)",
+            "promql": "max(kubesense_synthetics_api_results_queue_length)",
             "visible": true,
             "filters": {},
             "functions": [],
@@ -886,7 +886,7 @@
       },
       {
         "name": "Backing stores up",
-        "description": "1 while the last ping of each backing store succeeded, 0 otherwise. Needs the synthetics-api /metrics scraped into the platform TSDB (the Helm chart's ServiceMonitor, off unless the operator enables it); empty otherwise.",
+        "description": "1 while the last ping of each backing store succeeded, 0 otherwise.",
         "panelType": "timeSeries",
         "queries": [
           {
@@ -894,7 +894,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "min by (store) (synthetics_store_up)",
+            "promql": "min by (store) (kubesense_synthetics_api_store_up)",
             "visible": true,
             "filters": {},
             "functions": [],
