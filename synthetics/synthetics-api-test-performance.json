@@ -2,7 +2,7 @@
   "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "synthetics-api-test-performance",
-    "version": 3,
+    "version": 4,
     "requires": {
       "match": "any",
       "conditions": [
@@ -116,7 +116,7 @@
             "label": "A",
             "selectedMetric": "",
             "queryMode": "code",
-            "promql": "sum (increase(kubesense_synthetics_runs_total{status=\"success\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__time_filter])) / sum (increase(kubesense_synthetics_runs_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__time_filter])) * 100",
+            "promql": "(sum (increase(kubesense_synthetics_runs_total{status=\"success\", label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__time_filter])) or sum (increase(kubesense_synthetics_runs_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__time_filter])) * 0) / sum (increase(kubesense_synthetics_runs_total{label_env=~\"$env\", label_team=~\"$team\", label_service=~\"$service\", monitor_name=~\"$monitor\", location=~\"$location\", check_type=~\"$check_type\"}[$__time_filter])) * 100",
             "visible": true,
             "filters": {},
             "functions": [],
