@@ -18,7 +18,7 @@
     ]
   },
   "name": "Private Location Health",
-  "description": "Probe agents and check health per location, the agents' load (running checks against their slots, checks assigned, results waiting, versions), and the synthetics-api delivery of platform series and results. Agent, remote-write and results-writer panels read synthetics-api's own metrics, which reach the platform TSDB only when its ServiceMonitor scraping is enabled.",
+  "description": "Probe agents and check health per location, the agents' load (running checks against their slots, checks assigned, results waiting, versions), and the synthetics-api delivery of platform series and results. The service panels (leader replicas, backing stores, remote write, results pipeline) read the health every synthetics-api replica remote-writes alongside the platform series, so no scrape is needed.",
   "preset": {
     "gridLayout": [
       {
