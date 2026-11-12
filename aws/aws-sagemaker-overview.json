@@ -1,8 +1,16 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "aws-sagemaker-overview",
-    "version": 1,
-    "integration_id": "aws",
+    "version": 2,
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "aws"
+        }
+      ]
+    },
     "tags": [
       "aws",
       "sagemaker",
@@ -10,7 +18,7 @@
     ]
   },
   "name": "AWS SageMaker Endpoints Overview",
-  "description": "Invocations, latency and errors for SageMaker endpoints.",
+  "description": "Invocations, latency and errors for SageMaker endpoints, plus instance utilization, model setup time and inference-component invocations on the Expanded tier.",
   "preset": {
     "gridLayout": [
       {
@@ -1162,6 +1170,66 @@
             "config": {
               "yAxisLabelFormatter": "microseconds"
             }
+          },
+          {
+            "name": "Invocations per copy",
+            "description": "Needs the Expanded metric tier on the integration account. Panels stay empty on the default Core tier. Only endpoints that host inference components publish it.",
+            "panelType": "timeSeries",
+            "queries": [
+              {
+                "selectedMode": "metrics",
+                "label": "A",
+                "selectedMetric": "kubesense_cloud_resource_metric",
+                "queryMode": "builder",
+                "promql": "",
+                "visible": true,
+                "filters": {
+                  "provider": [
+                    "aws"
+                  ],
+                  "resource_type": [
+                    "SageMakerEndpoint"
+                  ],
+                  "account_id": [
+                    "$account"
+                  ],
+                  "region": [
+                    "$region"
+                  ],
+                  "resource_name": [
+                    "$resource"
+                  ],
+                  "metric_name": [
+                    "InvocationsPerCopy"
+                  ]
+                },
+                "functions": [
+                  {
+                    "type": "aggregations",
+                    "name": "sum",
+                    "arguments": [
+                      {
+                        "arg_name": "by",
+                        "arg_value": [
+                          "resource_name"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "labelOptions": {
+                  "type": "auto"
+                },
+                "pagination": {
+                  "page": 1,
+                  "page_size": 50
+                },
+                "fieldConfig": {}
+              }
+            ],
+            "config": {
+              "yAxisLabelFormatter": "number"
+            }
           }
         ],
         "gridLayout": [
@@ -1190,6 +1258,13 @@
             "i": "3",
             "x": 6,
             "y": 4,
+            "w": 6,
+            "h": 4
+          },
+          {
+            "i": "4",
+            "x": 0,
+            "y": 8,
             "w": 6,
             "h": 4
           }

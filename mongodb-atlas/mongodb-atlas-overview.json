@@ -1,8 +1,16 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "mongodb-atlas-overview",
     "version": 1,
-    "integration_id": "mongodbatlas",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "mongodbatlas"
+        }
+      ]
+    },
     "tags": [
       "mongodb",
       "atlas",
