@@ -2,7 +2,7 @@
   "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "aws-sagemaker-jobs-overview",
-    "version": 1,
+    "version": 2,
     "requires": {
       "match": "any",
       "conditions": [
@@ -42,7 +42,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -118,7 +118,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -195,7 +195,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -259,7 +259,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -323,7 +323,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -386,7 +386,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -449,7 +449,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -512,7 +512,7 @@
                 "SageMakerProcessingJob",
                 "SageMakerTransformJob"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -621,7 +621,7 @@
           "variableType": "metrics",
           "metric": "kubesense_cloud_resource_metric",
           "fieldMeta": {
-            "field": "account_id",
+            "field": "account_name",
             "type": "string",
             "is_attribute": false
           },
@@ -661,7 +661,7 @@
               "SageMakerProcessingJob",
               "SageMakerTransformJob"
             ],
-            "account_id": [
+            "account_name": [
               "$account"
             ]
           }
@@ -689,7 +689,7 @@
               "SageMakerProcessingJob",
               "SageMakerTransformJob"
             ],
-            "account_id": [
+            "account_name": [
               "$account"
             ],
             "region": [
@@ -726,7 +726,7 @@
                     "SageMakerProcessingJob",
                     "SageMakerTransformJob"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -789,7 +789,7 @@
                     "SageMakerProcessingJob",
                     "SageMakerTransformJob"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -852,7 +852,7 @@
                     "SageMakerProcessingJob",
                     "SageMakerTransformJob"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -915,7 +915,7 @@
                     "SageMakerProcessingJob",
                     "SageMakerTransformJob"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [

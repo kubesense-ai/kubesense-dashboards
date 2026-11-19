@@ -2,7 +2,7 @@
   "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "aws-sagemaker-overview",
-    "version": 2,
+    "version": 3,
     "requires": {
       "match": "any",
       "conditions": [
@@ -98,7 +98,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -172,7 +172,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -234,7 +234,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -301,7 +301,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -363,7 +363,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -423,7 +423,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -483,7 +483,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -533,7 +533,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -593,7 +593,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -648,7 +648,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -703,7 +703,7 @@
               "resource_type": [
                 "SageMakerEndpoint"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -753,7 +753,7 @@
           "variableType": "metrics",
           "metric": "kubesense_cloud_resource_metric",
           "fieldMeta": {
-            "field": "account_id",
+            "field": "account_name",
             "type": "string",
             "is_attribute": false
           },
@@ -789,7 +789,7 @@
             "resource_type": [
               "SageMakerEndpoint"
             ],
-            "account_id": [
+            "account_name": [
               "$account"
             ]
           }
@@ -815,7 +815,7 @@
             "resource_type": [
               "SageMakerEndpoint"
             ],
-            "account_id": [
+            "account_name": [
               "$account"
             ],
             "region": [
@@ -850,7 +850,7 @@
                   "resource_type": [
                     "SageMakerEndpoint"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -900,7 +900,7 @@
                   "resource_type": [
                     "SageMakerEndpoint"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -960,7 +960,7 @@
                   "resource_type": [
                     "SageMakerEndpoint"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1010,7 +1010,7 @@
                   "resource_type": [
                     "SageMakerEndpoint"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1070,7 +1070,7 @@
                   "resource_type": [
                     "SageMakerEndpoint"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1130,7 +1130,7 @@
                   "resource_type": [
                     "SageMakerEndpoint"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1190,7 +1190,7 @@
                   "resource_type": [
                     "SageMakerEndpoint"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [

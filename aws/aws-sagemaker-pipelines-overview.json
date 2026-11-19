@@ -2,7 +2,7 @@
   "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "aws-sagemaker-pipelines-overview",
-    "version": 1,
+    "version": 2,
     "requires": {
       "match": "any",
       "conditions": [
@@ -40,7 +40,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -102,7 +102,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -164,7 +164,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -226,7 +226,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -288,7 +288,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -336,7 +336,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -384,7 +384,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -432,7 +432,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -480,7 +480,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -538,7 +538,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -588,7 +588,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -648,7 +648,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -708,7 +708,7 @@
               "resource_type": [
                 "SageMakerPipeline"
               ],
-              "account_id": [
+              "account_name": [
                 "$account"
               ],
               "region": [
@@ -816,7 +816,7 @@
           "variableType": "metrics",
           "metric": "kubesense_cloud_resource_metric",
           "fieldMeta": {
-            "field": "account_id",
+            "field": "account_name",
             "type": "string",
             "is_attribute": false
           },
@@ -852,7 +852,7 @@
             "resource_type": [
               "SageMakerPipeline"
             ],
-            "account_id": [
+            "account_name": [
               "$account"
             ]
           }
@@ -878,7 +878,7 @@
             "resource_type": [
               "SageMakerPipeline"
             ],
-            "account_id": [
+            "account_name": [
               "$account"
             ],
             "region": [
@@ -913,7 +913,7 @@
                   "resource_type": [
                     "SageMakerPipeline"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -974,7 +974,7 @@
                   "resource_type": [
                     "SageMakerPipeline"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1035,7 +1035,7 @@
                   "resource_type": [
                     "SageMakerPipeline"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1083,7 +1083,7 @@
                   "resource_type": [
                     "SageMakerPipeline"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1131,7 +1131,7 @@
                   "resource_type": [
                     "SageMakerPipeline"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
@@ -1179,7 +1179,7 @@
                   "resource_type": [
                     "SageMakerPipeline"
                   ],
-                  "account_id": [
+                  "account_name": [
                     "$account"
                   ],
                   "region": [
