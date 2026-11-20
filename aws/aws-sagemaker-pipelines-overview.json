@@ -2,7 +2,7 @@
   "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "aws-sagemaker-pipelines-overview",
-    "version": 2,
+    "version": 3,
     "requires": {
       "match": "any",
       "conditions": [
@@ -54,6 +54,16 @@
               ]
             },
             "functions": [
+              {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
               {
                 "type": "aggregations",
                 "name": "sum",
@@ -117,6 +127,16 @@
             },
             "functions": [
               {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
+              {
                 "type": "aggregations",
                 "name": "sum",
                 "arguments": [
@@ -178,6 +198,16 @@
               ]
             },
             "functions": [
+              {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
               {
                 "type": "aggregations",
                 "name": "sum",
@@ -303,6 +333,16 @@
             },
             "functions": [
               {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
+              {
                 "type": "aggregations",
                 "name": "sum",
                 "arguments": [
@@ -350,6 +390,16 @@
               ]
             },
             "functions": [
+              {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
               {
                 "type": "aggregations",
                 "name": "sum",
@@ -399,6 +449,16 @@
             },
             "functions": [
               {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
+              {
                 "type": "aggregations",
                 "name": "sum",
                 "arguments": [
@@ -447,6 +507,16 @@
             },
             "functions": [
               {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
+              {
                 "type": "aggregations",
                 "name": "sum",
                 "arguments": [
@@ -494,6 +564,16 @@
               ]
             },
             "functions": [
+              {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
               {
                 "type": "aggregations",
                 "name": "sum",
@@ -553,6 +633,16 @@
             },
             "functions": [
               {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
+              {
                 "type": "aggregations",
                 "name": "sum",
                 "arguments": [
@@ -602,6 +692,16 @@
               ]
             },
             "functions": [
+              {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
               {
                 "type": "aggregations",
                 "name": "sum",
@@ -722,6 +822,16 @@
               ]
             },
             "functions": [
+              {
+                "type": "rollup",
+                "name": "sum_over_time",
+                "arguments": [
+                  {
+                    "arg_name": "over",
+                    "arg_value": "$__interval"
+                  }
+                ]
+              },
               {
                 "type": "aggregations",
                 "name": "sum",
@@ -928,6 +1038,16 @@
                 },
                 "functions": [
                   {
+                    "type": "rollup",
+                    "name": "sum_over_time",
+                    "arguments": [
+                      {
+                        "arg_name": "over",
+                        "arg_value": "$__interval"
+                      }
+                    ]
+                  },
+                  {
                     "type": "aggregations",
                     "name": "sum",
                     "arguments": [
@@ -1050,6 +1170,16 @@
                 },
                 "functions": [
                   {
+                    "type": "rollup",
+                    "name": "sum_over_time",
+                    "arguments": [
+                      {
+                        "arg_name": "over",
+                        "arg_value": "$__interval"
+                      }
+                    ]
+                  },
+                  {
                     "type": "aggregations",
                     "name": "sum",
                     "arguments": [
@@ -1097,6 +1227,16 @@
                   ]
                 },
                 "functions": [
+                  {
+                    "type": "rollup",
+                    "name": "sum_over_time",
+                    "arguments": [
+                      {
+                        "arg_name": "over",
+                        "arg_value": "$__interval"
+                      }
+                    ]
+                  },
                   {
                     "type": "aggregations",
                     "name": "sum",
@@ -1146,6 +1286,16 @@
                 },
                 "functions": [
                   {
+                    "type": "rollup",
+                    "name": "sum_over_time",
+                    "arguments": [
+                      {
+                        "arg_name": "over",
+                        "arg_value": "$__interval"
+                      }
+                    ]
+                  },
+                  {
                     "type": "aggregations",
                     "name": "sum",
                     "arguments": [
@@ -1193,6 +1343,16 @@
                   ]
                 },
                 "functions": [
+                  {
+                    "type": "rollup",
+                    "name": "sum_over_time",
+                    "arguments": [
+                      {
+                        "arg_name": "over",
+                        "arg_value": "$__interval"
+                      }
+                    ]
+                  },
                   {
                     "type": "aggregations",
                     "name": "sum",
