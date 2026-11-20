@@ -1,0 +1,1 @@
+{ "name": "T", "preset": {}, "meta": { "key": "k", "version": 1, "requires": { "match": "any", "conditions": [{ "env": "kubernetes", "rum": "browser" }] } } }

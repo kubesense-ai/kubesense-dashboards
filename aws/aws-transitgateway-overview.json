@@ -1,8 +1,16 @@
 {
+  "$schema": "../.schema/dashboard.schema.json",
   "meta": {
     "key": "aws-transitgateway-overview",
     "version": 1,
-    "integration_id": "aws",
+    "requires": {
+      "match": "any",
+      "conditions": [
+        {
+          "integration": "aws"
+        }
+      ]
+    },
     "tags": [
       "aws",
       "transitgateway",

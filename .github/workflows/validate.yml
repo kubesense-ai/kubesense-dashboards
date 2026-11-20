@@ -1,8 +1,12 @@
 name: Validate dashboards
 
 on:
+  # Every target branch, so a stacked pull request is checked against the branch
+  # it really merges into. edited is for a change of target (a stacked pull
+  # request moving to dev once the one below it merges); the jobs skip edits
+  # that leave the target alone.
   pull_request:
-    branches: [dev, test, main]
+    types: [opened, synchronize, reopened, edited]
   # Every branch, not only dev/test/main: a feature branch is checked by the
   # kubeapi branch of the same name, so a dashboard and the kubeapi change it
   # needs can be tested together before either merges. See "Pick the kubeapi
@@ -16,7 +20,20 @@ permissions:
   contents: read
 
 jobs:
+  schema:
+    if: github.event.action != 'edited' || github.event.changes.base
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install check-jsonschema==0.33.3
+      - name: Check dashboards and schema fixtures
+        run: .schema/check.sh
+
   validate:
+    if: github.event.action != 'edited' || github.event.changes.base
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -43,7 +60,8 @@ jobs:
       # pull request's head, or the pushed branch) when it exists, so a
       # dashboard is checked against the kubeapi change it was written for.
       # Otherwise the branch it merges into (the PR's target, or dev for a
-      # push). dev, test and main always exist in kubeapi.
+      # push) when kubeapi has it: a stacked pull request targets a feature
+      # branch that kubeapi may not have. Otherwise dev, which always exists.
       - name: Pick the kubeapi branch
         id: kubeapi
         env:
@@ -51,13 +69,15 @@ jobs:
           FALLBACK: ${{ github.event_name == 'schedule' && matrix.branch || github.base_ref || 'dev' }}
           TOKEN: ${{ secrets.KUBEAPI_READ_TOKEN }}
         run: |
-          if git ls-remote --exit-code --heads \
-              "https://x-access-token:${TOKEN}@github.com/kubesense-ai/kubeapi.git" \
-              "refs/heads/${TWIN}" >/dev/null; then
-            ref="$TWIN"
-          else
-            ref="$FALLBACK"
-          fi
+          ref=dev
+          for candidate in "$TWIN" "$FALLBACK"; do
+            if git ls-remote --exit-code --heads \
+                "https://x-access-token:${TOKEN}@github.com/kubesense-ai/kubeapi.git" \
+                "refs/heads/${candidate}" >/dev/null; then
+              ref="$candidate"
+              break
+            fi
+          done
           echo "Validating with kubeapi ${ref}"
           echo "ref=${ref}" >> "$GITHUB_OUTPUT"
 
